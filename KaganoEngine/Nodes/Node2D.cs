@@ -27,11 +27,6 @@ public class Node2D : Node
         {
             Console.WriteLine(ToJson());
         }
-
-        foreach (Node node in Game.currentScene.nodes)
-        {
-
-        }
     }
 
     public override void Draw()

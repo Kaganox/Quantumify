@@ -32,9 +32,22 @@ public abstract class Node
     public Node(string? uuid = null)
     {
         this.uuid = uuid ?? Guid.NewGuid().ToString();
-        Game.currentScene?.nodes.Add(this);
+        switch (NodeDimension())
+        {
+            case Dimension._2D:
+                Console.WriteLine("2D");
+                SceneManager.scene2d?.nodes.Add(this);
+                break;
+            case Dimension._3D:
+                SceneManager.scene3d?.nodes.Add(this);
+                break;
+        }
     }
 
+    public virtual Dimension NodeDimension()
+    {
+        return Dimension._2D;
+    }
     /// <summary>
     /// Runs every frame
     /// </summary>
@@ -48,7 +61,7 @@ public abstract class Node
         components.ForEach(component => component.Update());
     }
 
-    public virtual void FixUpdate()
+    public virtual void FixedUpdate()
     {
         components.ForEach(component => component.FixedUpdate());
     }
@@ -111,7 +124,7 @@ public abstract class Node
 
     public void Destroy()
     {
-        Scene? current = Game.currentScene;
+        Scene? current = SceneManager.scene2d;
         current?.nodes.Remove(this);
         components.ForEach(component => current?.components.Remove(component));
     }
@@ -130,7 +143,7 @@ public abstract class Node
         components.ToList().ForEach(component =>
         {
             this.components.Add(component);
-            Game.currentScene?.components.Add(component);
+            SceneManager.scene2d?.components.Add(component);
         });
     }
 
@@ -139,7 +152,7 @@ public abstract class Node
         components.ToList().ForEach(component =>
         {
             components.Remove(component);
-            Game.currentScene?.components.Remove(component);
+            SceneManager.scene2d?.components.Remove(component);
         });
     }
 

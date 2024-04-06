@@ -5,9 +5,13 @@ using KaganoEngine.Components;
 using Raylib_cs;
 using System.Numerics;
 using Test;
+using KaganoEngine;
+using KaganoEngine.Config;
 
 public partial class Program : Game
 {
+    public SaveFile saveFile;
+    public static Program program;
     public static void Main(string[] args)
     {
         new Program();
@@ -15,6 +19,7 @@ public partial class Program : Game
 
     public Program() : base(Dimension._3D)
     {
+        program = this;
         Run();
     }
 
@@ -24,25 +29,39 @@ public partial class Program : Game
         Console.WriteLine("Test");
         base.Init();
         //Texture2D texture = contentManager.Load<Texture2D>("content/player.png");
+        Console.WriteLine(Environment.CurrentDirectory + "/content/save.dat");
+        saveFile = new(Environment.CurrentDirectory + "/content/save.dat");
+        SaveFile.RegisterTyp<Player>();
 
-        Player player = new()
+        if (saveFile.Exists())
         {
-            Position = new Vector3(400, 240, 0),
-            texture = contentManager.Load<Texture2D>("player.png"),
-            color = Color.White,
-            Size = new Vector3(128, 128,0),
-        };
+            saveFile.Read();
+        }
+        else
+        {
+            Player player = new()
+            {
+                Position = new Vector3(400, 240, 0),
+            };
+        }
+
 
         Node3D node = new()
         {
-
-            Position = new Vector3(0, 0, 0),
+            Position = new Vector3(0, 1, 0),
             Texture = contentManager.Load<Texture2D>("texture.png"),
             Model = contentManager.Load<Model>("platypus.gltf"),
             Size = new Vector3(1, 1, 1),
             Scale = new Vector3(1f, 1f, 1f),
+            Rotation = new Vector3(0, 0f, 0),
+            RotationAxis = 1,
             Color = Color.White,
         };
         node.SetMaterialTexture();
+    }
+
+    public override void OnClose()
+    {
+        saveFile.Write();
     }
 }

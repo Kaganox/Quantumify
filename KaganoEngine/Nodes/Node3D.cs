@@ -16,13 +16,13 @@ namespace KaganoEngine.Nodes
         public float RotationAxis;
 
 
-        Vector3 Rotation;
+        public Vector3 Rotation;
         
-        public Node3D()
+        public Node3D() : base()
         {
             Color = Color.White;
             RotationAxis = 0;
-            Rotation = new Vector3(0, 0, 0);
+            //Rotation = new Vector3(0, 0, 0);
         }
 
         unsafe public void SetMaterialTexture()
@@ -34,6 +34,11 @@ namespace KaganoEngine.Nodes
                     Raylib.SetMaterialTexture(ref Model.Value.Materials[i], MaterialMapIndex.Albedo, Texture.Value);
                 }
             }
+        }
+
+        public override Dimension NodeDimension()
+        {
+            return Dimension._3D;
         }
 
         public override void Draw()

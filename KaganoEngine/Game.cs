@@ -8,7 +8,7 @@ using System.Numerics;
 
 public class Game : IDisposable
 {
-    public static Scene? currentScene;
+    public static Game game;
     public ContentManager contentManager { get; private set; }
     private float _fixedTimeStep; //TODO: create Settings
     private double _timer;
@@ -20,15 +20,7 @@ public class Game : IDisposable
     {
         this._fixedTimeStep = 1.0f / 60.0f;
         this.dimension = dimension;
-    }
-
-    public void JsonToNode(string json)
-    {
-        Dictionary<string, Type> types = new Dictionary<string, Type>();
-        Dictionary<string, string>? nodeData = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-        Type typeData = types["type"];
-        Node node = (Node)JsonConvert.DeserializeObject(json, typeData)!;
-        Game.currentScene?.nodes.Add(node);
+        game = this;
     }
 
 
@@ -36,14 +28,19 @@ public class Game : IDisposable
     /// The game loop
     /// </summary>
     /// <param name="action"></param>
-    public void Run(Scene? scene = null)
+    public void Run(Scene scene2d = null,Scene scene3d = null)
     {
         Logger.Success("Hello World!");
 
         
         Raylib.InitWindow(800, 480, "Hello World"); //TODO: create Window class with Title, Width, Height
         //Raylib.SetWindowIcon();
-        currentScene = scene ?? new Scene();
+        SceneManager.scene2d = scene2d ?? new Scene(Dimension._2D);
+
+        if (dimension == Dimension._3D)
+        {
+            SceneManager.scene3d = scene3d ?? new Scene(Dimension._3D);
+        }
         contentManager = new ContentManager();
         OnRun();
         Init();
@@ -54,27 +51,25 @@ public class Game : IDisposable
         camera.Up = Vector3.UnitY;          // Camera up vector (rotation towards target)
         camera.FovY = 45.0f;                                // Camera field-of-view Y
         camera.Projection= CameraProjection.Perspective;             // Camera mode type
-
+        SceneManager.camera3D = camera;
         while (!Raylib.WindowShouldClose())
         {
             bool is3D = dimension == Dimension._3D;
-            Raylib.UpdateCamera(ref camera, CameraMode.Orbital);
+            Raylib.UpdateCamera(ref SceneManager.camera3D, CameraMode.Orbital);
             Update();
             AfterUpdate();
             _timer += Raylib.GetFrameTime();
             while (_timer >= _fixedTimeStep)
             {
-                FixUpdate();
+                FixedUpdate();
                 _timer -= _fixedTimeStep;
             }
 
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Color.RayWhite);
-            Raylib.BeginMode3D(camera);
-
-            Raylib.DrawGrid(10, 1);
             Draw();
-            Raylib.EndMode3D();
+            //Raylib.DrawGrid(10, 1);
+
             Raylib.EndDrawing();
 
         }
@@ -102,7 +97,7 @@ public class Game : IDisposable
     /// </summary>
     public virtual void Update()
     {
-        Game.currentScene?.nodes.ForEach(node => node.Update());
+        SceneManager.scene2d?.nodes.ForEach(node => node.Update());
     }
 
 
@@ -116,9 +111,13 @@ public class Game : IDisposable
     /// <summary>
     /// Runs every _fixedTimeStep default 60fps (1/60s)
     /// </summary>
-    public virtual void FixUpdate()
+    public virtual void FixedUpdate()
     {
-        Game.currentScene?.nodes.ForEach(node => node.FixUpdate());
+        SceneManager.scene2d?.nodes.ForEach(node => node.FixedUpdate());
+        if (SceneManager.scene3d != null)
+        {
+            SceneManager.scene3d?.nodes.ForEach(node => node.FixedUpdate());
+        }
     }
 
 
@@ -127,8 +126,8 @@ public class Game : IDisposable
     /// </summary>
     public virtual void Draw()
     {
-        Raylib.DrawCube(new Vector3(0, 0, 0), 1, 1, 1, Color.Red);
-        Game.currentScene?.nodes.ForEach(node => node.Draw());
+        SceneManager.scene3d?.Draw();
+        SceneManager.scene2d?.Draw();
         Raylib.DrawText("Hello, world!", 12, 12, 20, Color.Black);
     }
 
@@ -151,8 +150,5 @@ public class Game : IDisposable
     }
 
 
-    public enum Dimension
-    {
-        _2D,_3D
-    }
+
 }

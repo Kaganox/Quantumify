@@ -18,6 +18,7 @@ public class Logger
     {
         if (changeColor) { Console.ResetColor(); }
         Console.WriteLine($"{TimeStamp()} {prefix} {message}");
+        Console.ResetColor();
     }
 
     public static void Warning(string message)
