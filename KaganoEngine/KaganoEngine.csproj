@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aether.Physics2D" Version="2.0.0" />
     <PackageReference Include="Jitter2" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.VsixColorCompiler" Version="17.0.31709.430" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

@@ -49,8 +49,8 @@ public partial class Program : Game
         Node3D node = new()
         {
             Position = new Vector3(0, 1, 0),
-            Texture = contentManager.Load<Texture2D>("texture.png"),
-            Model = contentManager.Load<Model>("platypus.gltf"),
+            Texture = contentManager.Load<Texture2D>("new.png"),
+            Model = contentManager.Load<Model>("model.glb"),
             Size = new Vector3(1, 1, 1),
             Scale = new Vector3(1f, 1f, 1f),
             Rotation = new Vector3(0, 0f, 0),

@@ -35,11 +35,11 @@ public class Game : IDisposable
         
         Raylib.InitWindow(800, 480, "Hello World"); //TODO: create Window class with Title, Width, Height
         //Raylib.SetWindowIcon();
-        SceneManager.scene2d = scene2d ?? new Scene(Dimension._2D);
+        SceneManager.activeScene = scene2d ?? new Scene(Dimension._2D);
 
         if (dimension == Dimension._3D)
         {
-            SceneManager.scene3d = scene3d ?? new Scene(Dimension._3D);
+            SceneManager.activeScene = scene3d ?? new Scene(Dimension._3D);
         }
         contentManager = new ContentManager();
         OnRun();
@@ -51,11 +51,11 @@ public class Game : IDisposable
         camera.Up = Vector3.UnitY;          // Camera up vector (rotation towards target)
         camera.FovY = 45.0f;                                // Camera field-of-view Y
         camera.Projection= CameraProjection.Perspective;             // Camera mode type
-        SceneManager.camera3D = camera;
+        Camera.camera3D = camera;
         while (!Raylib.WindowShouldClose())
         {
             bool is3D = dimension == Dimension._3D;
-            Raylib.UpdateCamera(ref SceneManager.camera3D, CameraMode.Orbital);
+            Raylib.UpdateCamera(ref Camera.camera3D, CameraMode.Orbital);
             Update();
             AfterUpdate();
             _timer += Raylib.GetFrameTime();
@@ -97,7 +97,7 @@ public class Game : IDisposable
     /// </summary>
     public virtual void Update()
     {
-        SceneManager.scene2d?.nodes.ForEach(node => node.Update());
+        SceneManager.Update();
     }
 
 
@@ -113,10 +113,10 @@ public class Game : IDisposable
     /// </summary>
     public virtual void FixedUpdate()
     {
-        SceneManager.scene2d?.nodes.ForEach(node => node.FixedUpdate());
-        if (SceneManager.scene3d != null)
+        SceneManager.activeScene?.nodes.ForEach(node => node.FixedUpdate());
+        if (SceneManager.activeScene != null)
         {
-            SceneManager.scene3d?.nodes.ForEach(node => node.FixedUpdate());
+            SceneManager.activeScene?.nodes.ForEach(node => node.FixedUpdate());
         }
     }
 
@@ -126,8 +126,7 @@ public class Game : IDisposable
     /// </summary>
     public virtual void Draw()
     {
-        SceneManager.scene3d?.Draw();
-        SceneManager.scene2d?.Draw();
+        SceneManager.Draw();
         Raylib.DrawText("Hello, world!", 12, 12, 20, Color.Black);
     }
 

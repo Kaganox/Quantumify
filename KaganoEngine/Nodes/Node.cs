@@ -29,17 +29,17 @@ public abstract class Node
     /// <summary>
     /// Creates a node
     /// </summary>
-    public Node(string? uuid = null)
+    public Node(string? uuid = null,Scene scene = null)
     {
         this.uuid = uuid ?? Guid.NewGuid().ToString();
         switch (NodeDimension())
         {
             case Dimension._2D:
                 Console.WriteLine("2D");
-                SceneManager.scene2d?.nodes.Add(this);
+                SceneManager.activeScene?.nodes.Add(this);
                 break;
             case Dimension._3D:
-                SceneManager.scene3d?.nodes.Add(this);
+                SceneManager.activeScene?.nodes.Add(this);
                 break;
         }
     }
@@ -124,7 +124,7 @@ public abstract class Node
 
     public void Destroy()
     {
-        Scene? current = SceneManager.scene2d;
+        Scene? current = SceneManager.activeScene;
         current?.nodes.Remove(this);
         components.ForEach(component => current?.components.Remove(component));
     }
@@ -140,20 +140,20 @@ public abstract class Node
 
     public void AddComponent(params Component[] components)
     {
-        components.ToList().ForEach(component =>
+        components.ToList().ForEach((Action<Component>)(component =>
         {
             this.components.Add(component);
-            SceneManager.scene2d?.components.Add(component);
-        });
+            SceneManager.activeScene?.components.Add(component);
+        }));
     }
 
     public void RemoveComponent(params Component[] component)
     {
-        components.ToList().ForEach(component =>
+        components.ToList().ForEach((Action<Component>)(component =>
         {
             components.Remove(component);
-            SceneManager.scene2d?.components.Remove(component);
-        });
+            SceneManager.activeScene?.components.Remove(component);
+        }));
     }
 
     public List<Component> GetComponents()

@@ -19,21 +19,18 @@ public class Scene
     {
         this.dimension = dimension;
     }
-    public void ChangeScene(Scene? scene)
-    {
-        SceneManager.scene2d = scene;
-        SceneManager.scene2d?.Dispose();
-    }
 
     public void Draw()
     {
         switch (dimension)
         {
             case Dimension._2D:
+                Raylib.BeginMode2D(Camera.camera2D);
                 nodes.ForEach(node => node.Draw());
+                Raylib.EndMode2D();
                 break;
             case Dimension._3D:
-                Raylib.BeginMode3D(SceneManager.camera3D);
+                Raylib.BeginMode3D(Camera.camera3D);
                 Raylib.DrawGrid(10, 1);
                 nodes.ForEach(node => node.Draw());
                 Raylib.EndMode3D();

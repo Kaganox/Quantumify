@@ -10,29 +10,22 @@ namespace KaganoEngine;
 
 public class Input
 {
-    /// <summary>
-    /// Detect if a key is being pressed
-    /// </summary>
+
+    /// <inheritdoc cref="Raylib.IsKeyDown"/>
     public static bool IsKeyDown(KeyboardKey key) => Raylib.IsKeyDown(key);
 
-    /// <summary>
-    /// Detect if a key is NOT being pressed
-    /// </summary>
+
+    /// <inheritdoc cref="Raylib.IsKeyUp"/>
     public static bool IsKeyUp(KeyboardKey key) => Raylib.IsKeyUp(key);
 
-    /// <summary>
-    /// Detect if a key been pressed once
-    /// </summary>
+    /// <inheritdoc cref="Raylib.IsKeyPressed"/>
     public static bool IsKeyPressed(KeyboardKey key) => Raylib.IsKeyPressed(key);
 
-    /// <summary>
-    /// Detect if a key is been released once
-    /// </summary>
+    /// <inheritdoc cref="Raylib.IsKeyReleased"/>
     public static bool IsKeyReleased(KeyboardKey key) => Raylib.IsKeyReleased(key);
 
-    /// <summary>
-    /// Detect if a key has been pressed again
-    /// </summary>
+
+    /// <inheritdoc cref="Raylib.IsKeyPressedRepeat"/>
     public static bool IsKeyPressedRepeat(KeyboardKey key) => Raylib.IsKeyPressedRepeat(key);
 
 

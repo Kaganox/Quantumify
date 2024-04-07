@@ -18,7 +18,6 @@ public class NBT
     }
 
     public int? GetInt(string key) => HasKey(key) ? int.Parse(data[key].ToString()!) : LogError<int>(key, "int");
-    
     public long? GetLong(string key) => HasKey(key) ? long.Parse(data[key].ToString()!) : LogError<long>(key, "long");
     public float? GetFloat(string key) => HasKey(key) ? float.Parse(data[key].ToString()!) : LogError<float>(key, "float");
     public string? GetString(string key) =>  HasKey(key) ? data[key].ToString()! : LogError<string>(key, "string");

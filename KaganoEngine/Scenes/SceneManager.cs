@@ -1,17 +1,41 @@
 ﻿using Raylib_cs;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KaganoEngine.Scenes;
 
-public class SceneManager
+public static class SceneManager 
 {
-    public static Scene? scene3d;
-    public static Scene? scene2d;
+    public static Scene? activeScene;
 
-    public static Camera2D camera2D = new Camera2D();
-    public static Camera3D camera3D = new Camera3D();
+
+    public static void ChangeScene(Scene? scene)
+    {
+        SceneManager.activeScene?.Dispose();
+        SceneManager.activeScene = scene;
+    }
+
+    internal static void Update()
+    {
+        activeScene?.nodes.ForEach(node => node.Update());
+    }
+
+    internal static void Draw()
+    {
+        activeScene?.nodes.ForEach(node => node.Draw());
+    }
+
+    internal static void FixedUpdate()
+    {
+        activeScene?.nodes.ForEach(node => node.FixedUpdate());
+    }
+
+    internal static void AfterUpdate()
+    {
+
+    }
 }
