@@ -22,7 +22,6 @@ public class Scene
 
     public void Draw()
     {
-        Console.WriteLine("here");
         switch (dimension)
         {
             case Dimension._2D:
@@ -31,7 +30,6 @@ public class Scene
                 Raylib.EndMode2D();
                 break;
             case Dimension._3D:
-                Console.WriteLine("3D");
                 Raylib.BeginMode3D(SceneCamera.camera3D);
                 Raylib.DrawGrid(10, 1);
                 nodes.ForEach(node => node.Draw());
