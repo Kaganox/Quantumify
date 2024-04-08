@@ -14,6 +14,7 @@ namespace KaganoEngine.Nodes;
 public abstract class Node
 {
     private List<Component> components = new List<Component>();
+    internal List<string> tags = new List<string>();
 
     public Vector3 Position = new Vector3(0, 0, 0),
                    Scale = new Vector3(1, 1, 1),
@@ -120,6 +121,18 @@ public abstract class Node
             return this.uuid == node.uuid;
         }
         return false;
+    }
+    public void AddTag(string tag)
+    {
+        tags.Add(tag);
+    }
+    public bool HasTag(string tag)
+    {
+        return tags.Contains(tag);
+    }
+    public void RemoveTag(string tag)
+    {
+        tags.Remove(tag);
     }
 
     public void Destroy()

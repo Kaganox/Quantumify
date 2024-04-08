@@ -43,19 +43,25 @@ public class Game : IDisposable
         }
         contentManager = new ContentManager();
         OnRun();
-        Init();
 
         Camera3D camera = new Camera3D();
         camera.Position = new Vector3(10, 10, 10); // Camera position
         camera.Target = new Vector3(0, 0, 0);      // Camera looking at point
         camera.Up = Vector3.UnitY;          // Camera up vector (rotation towards target)
         camera.FovY = 45.0f;                                // Camera field-of-view Y
-        camera.Projection= CameraProjection.Perspective;             // Camera mode type
+        camera.Projection = CameraProjection.Perspective;             // Camera mode type
         Camera.camera3D = camera;
+
+        Init();
+
         while (!Raylib.WindowShouldClose())
         {
             bool is3D = dimension == Dimension._3D;
-            Raylib.UpdateCamera(ref Camera.camera3D, CameraMode.Orbital);
+            if (is3D)
+            {
+                Raylib.UpdateCamera(ref Camera.camera3D, CameraMode.Orbital);
+            }
+
             Update();
             AfterUpdate();
             _timer += Raylib.GetFrameTime();

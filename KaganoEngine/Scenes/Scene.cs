@@ -37,6 +37,11 @@ public class Scene
                 break;
         }
     }
+
+    public List<Node> GetNodesByTag(string tag)
+    {
+        return nodes.FindAll(node => node.HasTag(tag));
+    }
     //Raylib.DrawCube(new Vector3(0, 0, 0), 1, 1, 1, Color.Red);
 
     public void Dispose()

@@ -26,8 +26,9 @@ public class Player : Node2D,SaveAble
     public override void Update()
     {
         base.Update();
-        
         Position += Input.Vector2Input()*0.1f;
+        Rotation = RotateToNode(Program.enemy);
+        Logger.Info($"Rotation: {Rotation} | {Program.enemy == null}");
     }
 
     public override void Collide(Node interact)
