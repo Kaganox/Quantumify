@@ -7,6 +7,7 @@ using System.Numerics;
 using Test;
 using KaganoEngine;
 using KaganoEngine.Config;
+using KaganoEngine.Scenes;
 
 public partial class Program : Game
 {
@@ -18,7 +19,7 @@ public partial class Program : Game
         new Program();
     }
 
-    public Program() : base(Dimension._3D)
+    public Program() : base(Dimension._2D)
     {
         program = this;
         Run();
@@ -34,30 +35,14 @@ public partial class Program : Game
         saveFile = new(Environment.CurrentDirectory + "/content/save.dat");
         SaveFile.RegisterTyp<Player>();
 
-        if (saveFile.Exists())
+        Player player = new()
         {
-            saveFile.Read();
-        }
-        else
-        {
-
-            enemy = new()
-            {
-                Position = new Vector3(0, 0, 0),
-            };
-            Player player = new()
-            {
-                Position = new Vector3(400, 240, 0),
-            };
-
-            CameraNode camera = new();
-            player.AddChild(camera);
-            camera.SetActiveCamera();
-
-        }
-
-
-        Node3D node = new()
+            Position = new Vector3(400, 240, 0),
+        };
+        Camera camera = new();
+        player.AddChild(camera);
+        camera.SetActiveCamera();
+        /*Node3D node = new()
         {
             Position = new Vector3(0, 1, 0),
             Texture = contentManager.Load<Texture2D>("new.png"),
@@ -68,7 +53,7 @@ public partial class Program : Game
             RotationAxis = 1,
             Color = Color.White,
         };
-        node.SetMaterialTexture();
+        node.SetMaterialTexture();*/
     }
 
     public override void OnClose()

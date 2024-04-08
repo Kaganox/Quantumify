@@ -1,4 +1,5 @@
-﻿using Raylib_cs;
+﻿using KaganoEngine.Nodes;
+using Raylib_cs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,21 +8,18 @@ using System.Threading.Tasks;
 
 namespace KaganoEngine.Scenes;
 
-public class Camera
+public class SceneCamera
 {
 
     public static Camera2D camera2D = new Camera2D();
     public static Camera3D camera3D = new Camera3D();
 
 
-    public static void SetActiveCamera(Camera2D camera2D)
-    {
-        camera2D = camera2D;
-    }
+    public static Camera active;
 
-    public static void SetActiveCamera(Camera3D camera3D)
+    public static void SetActiveCamera(Camera camera)
     {
-        camera3D = camera3D;
+        active = camera;
     }
 
 }

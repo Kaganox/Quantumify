@@ -50,7 +50,7 @@ public class Game : IDisposable
         camera.Up = Vector3.UnitY;          // Camera up vector (rotation towards target)
         camera.FovY = 45.0f;                                // Camera field-of-view Y
         camera.Projection = CameraProjection.Perspective;             // Camera mode type
-        Camera.camera3D = camera;
+        SceneCamera.camera3D = camera;
 
         Init();
 
@@ -59,7 +59,7 @@ public class Game : IDisposable
             bool is3D = dimension == Dimension._3D;
             if (is3D)
             {
-                Raylib.UpdateCamera(ref Camera.camera3D, CameraMode.Orbital);
+                Raylib.UpdateCamera(ref SceneCamera.camera3D, CameraMode.Orbital);
             }
 
             Update();
@@ -103,6 +103,11 @@ public class Game : IDisposable
     /// </summary>
     public virtual void Update()
     {
+        if(SceneCamera.active != null)
+        {
+            SceneCamera.camera2D = SceneCamera.active.GetCamera2D();
+            SceneCamera.camera3D = SceneCamera.active.GetCamera3D();
+        }
         SceneManager.Update();
     }
 

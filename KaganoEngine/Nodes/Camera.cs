@@ -1,4 +1,6 @@
 ﻿using KaganoEngine.Scenes;
+using KaganoEngine.Ultis;
+using nkast.Aether.Physics2D.Collision;
 using Raylib_cs;
 using System;
 using System.Collections.Generic;
@@ -9,27 +11,25 @@ using System.Threading.Tasks;
 
 namespace KaganoEngine.Nodes;
 
-public class CameraNode : Node
+public class Camera : Node
 {
     Camera2D camera2D;
     Camera3D camera3D;
 
-    public CameraNode() : base()
+    public Camera() : base()
     {
-        if(Game.game.dimension == Dimension._2D) {
+        if (Game.game.dimension == Dimension._2D) {
             camera2D = new Camera2D();
+            camera2D.Zoom = 1f;
+            camera2D.Offset = new Vector2(Window.GetWidth() / 2, Window.GetHeight() / 2);
         }
-        if (Game.game.dimension == Dimension._3D)
-        {
-            camera3D = new Camera3D();
-        }
+        if (Game.game.dimension == Dimension._3D) { camera3D = new Camera3D(); };
     }
 
     public override void Update()
     {
         base.Update();
-        camera2D.Offset = new Vector2(globalPosition.X, globalPosition.Y);
-
+        camera2D.Target = new Vector2(globalPosition.X, globalPosition.Y);
         camera3D.Position = globalPosition;
     }
 
@@ -45,14 +45,7 @@ public class CameraNode : Node
 
     public void SetActiveCamera()
     {
-        switch (Game.game.dimension) 
-        {
-            case Dimension._2D:
-                Camera.SetActiveCamera(camera2D);
-                break;
-            case Dimension._3D:
-                Camera.SetActiveCamera(camera3D);
-                break;
-        }
+        SceneCamera.SetActiveCamera(this);
+        
     }
 }

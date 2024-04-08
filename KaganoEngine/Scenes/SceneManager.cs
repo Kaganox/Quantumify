@@ -26,7 +26,8 @@ public static class SceneManager
 
     internal static void Draw()
     {
-        activeScene?.nodes.ForEach(node => node.Draw());
+        Console.WriteLine("DRAWING");
+        activeScene?.Draw();
     }
 
     internal static void FixedUpdate()
