@@ -26,14 +26,13 @@ public class Collision2D : Component
         
         _body.OnCollision += (sender, other, contact) =>
         {
-            Logger.Success("collide");
+            Logger.Info("enter");
             return true;
         };
 
         _body.OnSeparation += (sender, other, contact) =>
         {
-
-            Logger.Success("left?");
+            Logger.Info("exit");
         };
     }
     

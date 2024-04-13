@@ -44,7 +44,7 @@ public class Player : Node2D,SaveAble
     {
         if(interact is Enemy enemy)
         {
-            Console.WriteLine("HIT");
+            Logger.Warn("HIT");
         }
     }
 

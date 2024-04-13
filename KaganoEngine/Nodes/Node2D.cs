@@ -30,11 +30,6 @@ public class Node2D : Node
     public override void Update() 
     {
         base.Update();
-
-        if (Raylib.IsKeyDown(KeyboardKey.F))
-        {
-            Console.WriteLine(ToJson());
-        }
     }
 
     public override void Draw()

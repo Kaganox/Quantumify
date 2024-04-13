@@ -28,13 +28,12 @@ public partial class Program : Game
     public override void Init()
     {
 
-        Console.WriteLine("Test");
         base.Init();
         //Texture2D texture = contentManager.Load<Texture2D>("content/player.png");
         Console.WriteLine(Environment.CurrentDirectory + "/content/save.dat");
         saveFile = new(Environment.CurrentDirectory + "/content/save.dat");
         SaveFile.RegisterTyp<Player>();
-
+        
         Enemy enemy = new()
         {
             
@@ -47,6 +46,7 @@ public partial class Program : Game
         Camera camera = new();
         player.AddChild(camera);
         camera.SetActiveCamera();
+        
         /*Node3D node = new()
         {
             Position = new Vector3(0, 1, 0),

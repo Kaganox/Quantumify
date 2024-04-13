@@ -34,7 +34,7 @@ public class Game : IDisposable
     public void Run(Scene scene2d = null,Scene scene3d = null)
     {
         Logger.SetupRaylibLogger();
-        Logger.Success("Hello World!");
+        Logger.Info("Hello World!");
 
         SceneCamera.Init();
         Raylib.InitWindow(800, 480, "Hello World"); //TODO: create Window class with Title, Width, Height
@@ -144,7 +144,7 @@ public class Game : IDisposable
     /// </summary>
     public virtual void OnClose()
     {
-        Console.WriteLine("Goodbye, World!");
+        Logger.Info("Goodbye, World!");
     }
 
 

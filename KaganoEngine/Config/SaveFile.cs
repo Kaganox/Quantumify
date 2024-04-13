@@ -40,7 +40,6 @@ public class SaveFile
     }
     public void JsonToNode(NBT nbt)
     {
-        Console.WriteLine(nbt.GetString("type"));
         Type typeData = types[nbt.GetString("type")!];
         Node node = (Node)Activator.CreateInstance(typeData)!;//JsonConvert.DeserializeObject(json, typeData)!;
         if(node is SaveAble saveAble) { saveAble.Read(nbt); }

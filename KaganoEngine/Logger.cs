@@ -13,14 +13,10 @@ namespace KaganoEngine;
 
 public class Logger
 {
-    public static void Init()
-    {
-        
-    }
 
     private static string TimeStamp()
     {
-        return $"[{DateTime.Now.ToString("yyyy-MM-dd|HH:mm:ss")}] ";
+        return $"[{DateTime.Now.ToString("HH:mm")}] ";
     }
 
     private static void Log(string message, string prefix = "", ConsoleColor color = ConsoleColor.White, int skipFrames = 3)
@@ -33,44 +29,22 @@ public class Logger
         
         Console.ResetColor();
         Console.ForegroundColor = color;
-        Console.WriteLine($"{methodName}:{line} {prefix}: {message}");
+        Console.WriteLine($"[{methodName}:{line}]{TimeStamp()}[{prefix}]: {message}");
         Console.ResetColor();
     }
 
-    public static void Warning(string message, int skipFrames = 2)
-    {
-        Log(message,"WARNING",ConsoleColor.Yellow,skipFrames);
-    }
-
-    public static void Error(string message, int skipFrames = 2)
-    {
-        Log(message,"ERROR",ConsoleColor.Red,skipFrames);
-    }
-
-    public static void Success(string message, int skipFrames = 2)
-    {
-        Log(message, "SUCCESS", ConsoleColor.Green, skipFrames);
-    }
-
-    public static void Info(string message, int skipFrames = 2)
-    {
-        Log(message, "INFO", ConsoleColor.Cyan, skipFrames);
-    }
-    
-    public static void Fatal(string message, int skipFrames = 2)
-    {
-        Log(message, "INFO", ConsoleColor.Cyan, skipFrames);
-    }
-    
     public static void Debug(string message, int skipFrames = 2)
     {
-        Log(message, "INFO", ConsoleColor.Cyan, skipFrames);
+#if(DEBUG)
+        Log(message, "DEBUG", ConsoleColor.Gray, skipFrames);
+#endif
     }
-
-    public static void Warn(string message, int skipFrames = 2)
-    {
-        Log(message, "INFO", ConsoleColor.Cyan, skipFrames);
-    }
+    public static void Info(string message, int skipFrames = 2)=> Log(message, "INFO", ConsoleColor.DarkBlue, skipFrames);
+    public static void Warn(string message, int skipFrames = 2)=>Log(message, "INFO", ConsoleColor.Yellow, skipFrames);
+    public static void Error(string message, int skipFrames = 2) => Log(message,"ERROR",ConsoleColor.Red,skipFrames);
+    
+    public static void Fatal(string message, int skipFrames = 2)=>  Log(message, "FATAL", ConsoleColor.Cyan, skipFrames);
+    
     /// <summary>
     /// Configures a custom <see cref="Raylib"/> log by setting a trace log callback.
     /// </summary>
@@ -81,10 +55,13 @@ public class Logger
     [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvCdecl) })]
     private static unsafe void RaylibLogger(int logLevel, sbyte* text, sbyte* args) {
         string message = Logging.GetLogMessage(new IntPtr(text), new IntPtr(args));
-        
-        switch ((TraceLogLevel) logLevel) {
+
+        switch ((TraceLogLevel)logLevel)
+        {
             case TraceLogLevel.Debug:
                 Debug(message,3);
+        
+
                 break;
 
             case TraceLogLevel.Info:

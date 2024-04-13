@@ -16,7 +16,10 @@ public abstract class Component
         this.node = node;
     }
 
-    public abstract void Update();
+    public virtual void Update()
+    {
+        
+    }
 
     public virtual void AfterUpdate()
     {
