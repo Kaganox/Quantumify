@@ -19,7 +19,7 @@ public partial class Program : Game
         new Program();
     }
 
-    public Program() : base(Dimension._3D)
+    public Program() : base(Dimension._2D)
     {
         program = this;
         Run();
@@ -39,9 +39,9 @@ public partial class Program : Game
         {
             Position = new Vector3(400, 240, 0),
         };
-        /*Camera camera = new();
+        Camera camera = new();
         player.AddChild(camera);
-        camera.SetActiveCamera();*/
+        camera.SetActiveCamera();
         Node3D node = new()
         {
             Position = new Vector3(0, 1, 0),

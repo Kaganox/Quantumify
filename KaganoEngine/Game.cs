@@ -1,4 +1,7 @@
-﻿using KaganoEngine;
+﻿using Box2DX.Collision;
+using Box2DX.Common;
+using Box2DX.Dynamics;
+using KaganoEngine;
 using KaganoEngine.Manager;
 using KaganoEngine.Nodes;
 using KaganoEngine.Scenes;
@@ -12,6 +15,7 @@ public class Game : IDisposable
     public ContentManager contentManager { get; private set; }
     private float _fixedTimeStep; //TODO: create Settings
     private double _timer;
+    public World world;
     public Dimension dimension { get; private set; }
     /// <summary>
     /// Starts the game
@@ -21,7 +25,10 @@ public class Game : IDisposable
         this._fixedTimeStep = 1.0f / 60.0f;
         this.dimension = dimension;
         game = this;
+        this.world = new World(new AABB(),Gravity(),true);
     }
+
+    public virtual Vec2 Gravity() => new Vec2(0, 0);
 
 
     /// <summary>
@@ -32,7 +39,7 @@ public class Game : IDisposable
     {
         Logger.Success("Hello World!");
 
-        
+        SceneCamera.Init();
         Raylib.InitWindow(800, 480, "Hello World"); //TODO: create Window class with Title, Width, Height
         //Raylib.SetWindowIcon();
         SceneManager.activeScene = scene2d ?? new Scene(Dimension._2D);
@@ -50,7 +57,7 @@ public class Game : IDisposable
         camera.Up = Vector3.UnitY;          // Camera up vector (rotation towards target)
         camera.FovY = 45.0f;                                // Camera field-of-view Y
         camera.Projection = CameraProjection.Perspective;             // Camera mode type
-        SceneCamera.camera3D = camera;
+         // Set the camera = camera;
 
         Init();
 
@@ -59,7 +66,8 @@ public class Game : IDisposable
             bool is3D = dimension == Dimension._3D;
             if (is3D)
             {
-                Raylib.UpdateCamera(ref SceneCamera.camera3D, CameraMode.Orbital);
+                Camera3D camera3D = SceneCamera.Camera.GetCamera3D();
+                Raylib.UpdateCamera(ref camera3D, CameraMode.Orbital);
             }
 
             Update();
@@ -72,7 +80,7 @@ public class Game : IDisposable
             }
 
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.RayWhite);
+            Raylib.ClearBackground(Raylib_cs.Color.RayWhite);
             Draw();
             //Raylib.DrawGrid(10, 1);
 
@@ -103,11 +111,6 @@ public class Game : IDisposable
     /// </summary>
     public virtual void Update()
     {
-        if(SceneCamera.active != null)
-        {
-            SceneCamera.camera2D = SceneCamera.active.GetCamera2D();
-            SceneCamera.camera3D = SceneCamera.active.GetCamera3D();
-        }
         SceneManager.Update();
     }
 
@@ -138,7 +141,7 @@ public class Game : IDisposable
     public virtual void Draw()
     {
         SceneManager.Draw();
-        Raylib.DrawText("Hello, world!", 12, 12, 20, Color.Black);
+        Raylib.DrawText("Hello, world!", 12, 12, 20, Raylib_cs.Color.Black);
     }
 
 

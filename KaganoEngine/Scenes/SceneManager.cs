@@ -26,7 +26,6 @@ public static class SceneManager
 
     internal static void Draw()
     {
-        Console.WriteLine("DRAWING");
         activeScene?.Draw();
     }
 

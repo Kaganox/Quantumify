@@ -1,6 +1,5 @@
 ﻿using KaganoEngine.Scenes;
 using KaganoEngine.Ultis;
-using nkast.Aether.Physics2D.Collision;
 using Raylib_cs;
 using System;
 using System.Collections.Generic;
@@ -33,19 +32,11 @@ public class Camera : Node
         camera3D.Position = globalPosition;
     }
 
-    public Camera2D GetCamera2D()
-    {
-        return camera2D;
-    }
-
-    public Camera3D GetCamera3D()
-    {
-        return camera3D;
-    }
+    public Camera2D GetCamera2D() => camera2D;
+    public Camera3D GetCamera3D() => camera3D;
 
     public void SetActiveCamera()
     {
         SceneCamera.SetActiveCamera(this);
-        
     }
 }

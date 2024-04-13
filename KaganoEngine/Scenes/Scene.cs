@@ -25,12 +25,12 @@ public class Scene
         switch (dimension)
         {
             case Dimension._2D:
-                Raylib.BeginMode2D(SceneCamera.camera2D);
+                Raylib.BeginMode2D(SceneCamera.Camera.GetCamera2D());
                 nodes.ForEach(node => node.Draw());
                 Raylib.EndMode2D();
                 break;
             case Dimension._3D:
-                Raylib.BeginMode3D(SceneCamera.camera3D);
+                Raylib.BeginMode3D(SceneCamera.Camera.GetCamera3D());
                 Raylib.DrawGrid(10, 1);
                 nodes.ForEach(node => node.Draw());
                 Raylib.EndMode3D();

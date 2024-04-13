@@ -1,10 +1,11 @@
 ﻿using KaganoEngine.Nodes;
-using x = nkast.Aether.Physics2D.Collision;
 using Raylib_cs;
 using System.Numerics;
 using KaganoEngine.Scenes;
-using nkast.Aether.Physics2D.Collision;
 using System.Net.Http.Headers;
+using Box2DX.Collision;
+using Box2DX.Dynamics;
+using Box2DX.Common;
 
 namespace KaganoEngine.Components
 {
@@ -15,6 +16,11 @@ namespace KaganoEngine.Components
         public Collision2D(Node node, Shape shape) : base(node)
         {
             this.shape = shape;
+            /*World world = new World(new Vec2(0, 0),0);
+            
+            BodyDef bodyDef = new BodyDef();
+            bodyDef.Position.Set(node.Position.X, node.Position.Y);
+            Body body = world.CreateBody(bodyDef);*/
         }
 
         public override void Update()
