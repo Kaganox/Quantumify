@@ -1,98 +1,60 @@
-﻿using KaganoEngine.Nodes;
-using Raylib_cs;
+﻿using System.Drawing;
 using System.Numerics;
+using KaganoEngine.Nodes;
+using KaganoEngine.Physics.Aether;
 using KaganoEngine.Scenes;
-using System.Net.Http.Headers;
-using Box2DX.Collision;
-using Box2DX.Dynamics;
-using Box2DX.Common;
+using nkast.Aether.Physics2D.Dynamics;
+using nkast.Aether.Physics2D.Dynamics.Contacts;
+using Raylib_cs;
+using Vector2 = nkast.Aether.Physics2D.Common.Vector2;
 
-namespace KaganoEngine.Components
+namespace KaganoEngine.Components;
+
+public class Collision2D : Component
 {
-    public class Collision2D : Component
+    private readonly Body _body;
+    public Collision2D(Node2D node, BodyType bodyType = BodyType.Dynamic) : base(node)
     {
-        public Shape shape { get; private set; }
-
-        public Collision2D(Node node, Shape shape) : base(node)
+        
+        World world = ((Simulation2D)SceneManager.activeScene.Simulation).World;
+        Vector2 position = new Vector2(node.Position.X, node.Position.Y);
+        _body = world.CreateBody(position,node.Rotation,bodyType);
+        _body.Mass = 1000;
+        _body.CreateRectangle(node.Size.X, node.Size.Y, 1f,new Vector2());
+        _body.Awake = true;
+        
+        
+        _body.OnCollision += (sender, other, contact) =>
         {
-            this.shape = shape;
-            /*World world = new World(new Vec2(0, 0),0);
-            
-            BodyDef bodyDef = new BodyDef();
-            bodyDef.Position.Set(node.Position.X, node.Position.Y);
-            Body body = world.CreateBody(bodyDef);*/
-        }
+            Logger.Success("collide");
+            return true;
+        };
 
-        public override void Update()
+        _body.OnSeparation += (sender, other, contact) =>
         {
 
-            SceneManager.activeScene?.components.ForEach(component =>
-            {
-                if(shape!=Shape.Rectangle&&shape!=Shape.Circle)
-                {
-                    Logger.Error($"{shape.ToString()} Not supported yet");
-                }
+            Logger.Success("left?");
+        };
+    }
+    
+    public override void Update()
+    {
+    }
 
-                if(component is Collision2D collision2D)
-                {
-                    if (CheckRects(collision2D)||CheckCircles(collision2D)||
-                        CheckCircleAndRect(collision2D,this)||CheckCircleAndRect(this,collision2D))
-                    {
-                        node.Collide(collision2D.node);
-                    }
-                }
-            });
-            Logger.Error("Collisions are not supported yet");
-        }
+    public override void AfterUpdate()
+    {
+    }
 
+    public override void FixedUpdate()
+    {
+        node.Position = new Vector3(_body.Position.X, _body.Position.Y, 0);
+        if (node is Node2D node2D) node2D.Rotation = _body.Rotation;
 
-        public bool CheckRects(Collision2D target)
-        {
-            return shape==Shape.Rectangle && target.shape==Shape.Rectangle &&
-                   Raylib.CheckCollisionRecs(NodeToRectangle(node), NodeToRectangle(target.node));
-        }
-
-        public bool CheckCircles(Collision2D target)
-        {
-            Tuple<Vector2, float> circle = NodeToCircle(node);
-            Tuple<Vector2, float> targetCircle = NodeToCircle(target.node);
-            return shape == Shape.Circle && target.shape == Shape.Circle &&
-                   Raylib.CheckCollisionCircles(circle.Item1, circle.Item2, targetCircle.Item1, targetCircle.Item2);
-        }
-
-        public bool CheckCircleAndRect(Collision2D target,Collision2D node)
-        {
-            Tuple<Vector2, float> circle = NodeToCircle(node.node);
-
-            return shape == Shape.Circle && target.shape == Shape.Rectangle &&
-                   Raylib.CheckCollisionCircleRec(circle.Item1, circle.Item2, NodeToRectangle(target.node));
-        }
-
-
-
-
-        public Rectangle NodeToRectangle(Node node)
-        {
-            int[] pos = node.VectorToIntArray(node.Position);
-            int[] size = node.VectorToIntArray(node.Size);
-
-            return new Rectangle(pos[0], pos[1], new Vector2(size[0], size[1]));
-        }
-
-        public Tuple<Vector2, float> NodeToCircle(Node node)
-        {
-            int[] pos = node.VectorToIntArray(node.Position);
-            Vector2 center = new Vector2(node.Scale.X, node.Scale.Y)+new Vector2(pos[0], pos[1]);
-            float radius = node.Scale.X/2;
-            return new Tuple<Vector2, float>(center, radius);
-        }
-        /*
-         * #CheckCollisionPointRec
-            #CheckCollisionPointCircle
-            #CheckCollisionPointTriangle
-            #CheckCollisionPointPoly
-            CheckCollisionLines
-            CheckCollisionPointLine
-         */
+    }
+    
+    public Vector2 AddVelocity(Vector2 position)
+    {
+        _body.Awake = true;
+        return _body.Position += position;
     }
 }

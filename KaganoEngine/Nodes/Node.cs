@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace KaganoEngine.Nodes;
 
-public abstract class Node
+public abstract class Node : IUpdate
 {
     private List<Component> components = new List<Component>();
     internal List<string> tags = new List<string>();
@@ -37,10 +37,10 @@ public abstract class Node
         {
             case Dimension._2D:
                 Console.WriteLine("2D");
-                SceneManager.activeScene?.nodes.Add(this);
+                SceneManager.activeScene?.Nodes.Add(this);
                 break;
             case Dimension._3D:
-                SceneManager.activeScene?.nodes.Add(this);
+                SceneManager.activeScene?.Nodes.Add(this);
                 break;
         }
     }
@@ -60,6 +60,11 @@ public abstract class Node
             globalPosition += parent.globalPosition;
         }
         components.ForEach(component => component.Update());
+    }
+
+    public virtual void AfterUpdate()
+    {
+        components.ForEach(component => component.AfterUpdate());
     }
 
     public virtual void FixedUpdate()
@@ -138,8 +143,8 @@ public abstract class Node
     public void Destroy()
     {
         Scene? current = SceneManager.activeScene;
-        current?.nodes.Remove(this);
-        components.ForEach(component => current?.components.Remove(component));
+        current?.Nodes.Remove(this);
+        components.ForEach(component => current?.Components.Remove(component));
     }
 
     /// <summary>
@@ -156,7 +161,7 @@ public abstract class Node
         components.ToList().ForEach((Action<Component>)(component =>
         {
             this.components.Add(component);
-            SceneManager.activeScene?.components.Add(component);
+            SceneManager.activeScene?.Components.Add(component);
         }));
     }
 
@@ -165,7 +170,7 @@ public abstract class Node
         components.ToList().ForEach((Action<Component>)(component =>
         {
             components.Remove(component);
-            SceneManager.activeScene?.components.Remove(component);
+            SceneManager.activeScene?.Components.Remove(component);
         }));
     }
 
@@ -176,6 +181,5 @@ public abstract class Node
 
     public virtual void Collide(Node interact)
     {
-
     }
 }

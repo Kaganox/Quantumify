@@ -7,6 +7,9 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using KaganoEngine.Physics.Aether;
+using KaganoEngine.Scenes;
+using nkast.Aether.Physics2D.Dynamics;
 
 namespace KaganoEngine.Nodes;
 
@@ -17,6 +20,8 @@ public class Node2D : Node
     public Color color = Color.White;
     public float Rotation = 0;
     public Vector2? Origin = null;
+
+    
     public Node2D(Texture2D? texture = null) : base()
     {
         this.texture = texture;

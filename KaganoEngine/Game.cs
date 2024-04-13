@@ -1,13 +1,12 @@
-﻿using Box2DX.Collision;
-using Box2DX.Common;
-using Box2DX.Dynamics;
-using KaganoEngine;
+﻿using KaganoEngine;
 using KaganoEngine.Manager;
 using KaganoEngine.Nodes;
 using KaganoEngine.Scenes;
 using Newtonsoft.Json;
 using Raylib_cs;
 using System.Numerics;
+using KaganoEngine.Physics.Aether;
+using KaganoEngine.Physics.Jitter;
 
 public class Game : IDisposable
 {
@@ -15,7 +14,6 @@ public class Game : IDisposable
     public ContentManager contentManager { get; private set; }
     private float _fixedTimeStep; //TODO: create Settings
     private double _timer;
-    public World world;
     public Dimension dimension { get; private set; }
     /// <summary>
     /// Starts the game
@@ -25,10 +23,8 @@ public class Game : IDisposable
         this._fixedTimeStep = 1.0f / 60.0f;
         this.dimension = dimension;
         game = this;
-        this.world = new World(new AABB(),Gravity(),true);
     }
 
-    public virtual Vec2 Gravity() => new Vec2(0, 0);
 
 
     /// <summary>
@@ -37,16 +33,17 @@ public class Game : IDisposable
     /// <param name="action"></param>
     public void Run(Scene scene2d = null,Scene scene3d = null)
     {
+        Logger.SetupRaylibLogger();
         Logger.Success("Hello World!");
 
         SceneCamera.Init();
         Raylib.InitWindow(800, 480, "Hello World"); //TODO: create Window class with Title, Width, Height
         //Raylib.SetWindowIcon();
-        SceneManager.activeScene = scene2d ?? new Scene(Dimension._2D);
+        SceneManager.activeScene = scene2d ?? new Scene(Dimension._2D,new Physic2DSettings());
 
         if (dimension == Dimension._3D)
         {
-            SceneManager.activeScene = scene3d ?? new Scene(Dimension._3D);
+            SceneManager.activeScene = scene3d ?? new Scene(Dimension._3D,new Physics3DSettings());
         }
         contentManager = new ContentManager();
         OnRun();
@@ -120,6 +117,7 @@ public class Game : IDisposable
     /// </summary>
     public virtual void AfterUpdate()
     {
+        SceneManager.AfterUpdate();
     }
 
     /// <summary>
@@ -127,11 +125,7 @@ public class Game : IDisposable
     /// </summary>
     public virtual void FixedUpdate()
     {
-        SceneManager.activeScene?.nodes.ForEach(node => node.FixedUpdate());
-        if (SceneManager.activeScene != null)
-        {
-            SceneManager.activeScene?.nodes.ForEach(node => node.FixedUpdate());
-        }
+        SceneManager.FixedUpdate();
     }
 
 

@@ -21,21 +21,22 @@ public static class SceneManager
 
     internal static void Update()
     {
-        activeScene?.nodes.ForEach(node => node.Update());
+        activeScene?.Update();
+    }
+
+    
+    internal static void AfterUpdate()
+    {
+        activeScene?.Update();
+    }
+    
+    internal static void FixedUpdate()
+    {
+        activeScene?.FixedUpdate();
     }
 
     internal static void Draw()
     {
         activeScene?.Draw();
-    }
-
-    internal static void FixedUpdate()
-    {
-        activeScene?.nodes.ForEach(node => node.FixedUpdate());
-    }
-
-    internal static void AfterUpdate()
-    {
-
     }
 }
