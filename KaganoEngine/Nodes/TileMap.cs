@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
-using System.Net.Mime;
-using System.Drawing.Imaging;
-using nkast.Aether.Physics2D.Common;
+﻿using nkast.Aether.Physics2D.Common;
 using Raylib_cs;
 using Color = Raylib_cs.Color;
 
 namespace KaganoEngine.Nodes;
 
-public class Tilemap : Node
-{
+public class TileMap : Node {
     
     //layer,position, atlas
     private Dictionary<int,Dictionary<int, Dictionary<int,Vector2>>> _tiles;
-    public unsafe Tilemap(List<Image> layers, Dictionary<int,Vector2> atlas)
+    public unsafe TileMap(List<Image> layers, Dictionary<int,Vector2> atlas)
     {
         
         Image image = default;

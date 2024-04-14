@@ -10,13 +10,11 @@ using nkast.Aether.Physics2D.Dynamics;
 
 namespace Test;
 
-public class Enemy : Node2D
-{
-    public Enemy() : base(bodyType:BodyType.Static)
-    {
-        Position = new Vector3(350, 640 + 148,0);
+public class Enemy : Node2D {
+    public Enemy() : base(pos:new Vector2(350, 640 + 178), bodyType:BodyType.Static) {
         Size = new Vector3(128*5, 128, 0);
-        
+        Color = Raylib_cs.Color.Blue;
+
         //AddComponent(new Collision2D(this,BodyType.Static));
     }
 }

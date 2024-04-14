@@ -28,8 +28,8 @@ public class Camera : Node
     public override void Update()
     {
         base.Update();
-        camera2D.Target = new Vector2(globalPosition.X, globalPosition.Y);
-        camera3D.Position = globalPosition;
+        camera2D.Target = new Vector2(GlobalPosition.X, GlobalPosition.Y);
+        camera3D.Position = GlobalPosition;
     }
 
     public Camera2D GetCamera2D() => camera2D;

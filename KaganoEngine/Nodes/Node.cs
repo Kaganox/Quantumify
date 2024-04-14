@@ -19,77 +19,58 @@ public abstract class Node : IUpdate
     public Vector3 Position = new Vector3(0, 0, 0),
                    Scale = new Vector3(1, 1, 1),
                    Size = new Vector3(50, 50, 0),
-                   globalPosition = new Vector3(0, 0, 0);
+                   GlobalPosition = new Vector3(0, 0, 0);
 
     public string uuid;
+    public string parentUUID;
+
     private List<Node> children = new List<Node>();
 
     private Node? parent;
-    public string parentUUID;
 
     /// <summary>
     /// Creates a node
     /// </summary>
-    public Node(string? uuid = null,Scene scene = null)
-    {
+    public Node(string? uuid = default) {
         this.uuid = uuid ?? Guid.NewGuid().ToString();
-        switch (NodeDimension())
-        {
-            case Dimension._2D:
-                Console.WriteLine("2D");
-                SceneManager.activeScene?.Nodes.Add(this);
-                break;
-            case Dimension._3D:
-                SceneManager.activeScene?.Nodes.Add(this);
-                break;
-        }
+        SceneManager.ActiveScene?.Nodes.Add(this);
     }
-
-    public virtual Dimension NodeDimension()
-    {
-        return Dimension._2D;
-    }
+    
     /// <summary>
     /// Runs every frame
     /// </summary>
-    public virtual void Update()
-    {
-        globalPosition = Position;
-        if (parent != null)
-        {
-            globalPosition += parent.globalPosition;
-        }
+    public virtual void Update() {
         components.ForEach(component => component.Update());
+        
+        GlobalPosition = Position;
+        
+        if (parent != null) {
+            GlobalPosition += parent.GlobalPosition;
+        }
     }
 
-    public virtual void AfterUpdate()
-    {
+    public virtual void AfterUpdate() {
         components.ForEach(component => component.AfterUpdate());
     }
 
-    public virtual void FixedUpdate()
-    {
+    public virtual void FixedUpdate() {
         components.ForEach(component => component.FixedUpdate());
     }
 
-    public virtual void Draw()
-    {
+    public virtual void Draw() {
         components.ForEach(component => component.Draw());
 
     }
 
-    public int[] VectorToIntArray(Vector3 vector)
-    {
+    public int[] VectorToIntArray(Vector3 vector) {
         return new int[] { (int)vector.X, (int)vector.Y, (int)vector.Z };
     }
 
-    public List<Node> GetChilds()
-    {
+    public List<Node> GetChilds() {
         return children;
     }
 
-    public Node? GetParent()
-    {
+    public Node? GetParent() {
         return parent;
     }
 
@@ -142,7 +123,7 @@ public abstract class Node : IUpdate
 
     public void Destroy()
     {
-        Scene? current = SceneManager.activeScene;
+        Scene? current = SceneManager.ActiveScene;
         current?.Nodes.Remove(this);
         components.ForEach(component => current?.Components.Remove(component));
     }
@@ -161,7 +142,7 @@ public abstract class Node : IUpdate
         components.ToList().ForEach((Action<Component>)(component =>
         {
             this.components.Add(component);
-            SceneManager.activeScene?.Components.Add(component);
+            SceneManager.ActiveScene?.Components.Add(component);
         }));
     }
 
@@ -170,7 +151,7 @@ public abstract class Node : IUpdate
         components.ToList().ForEach((Action<Component>)(component =>
         {
             components.Remove(component);
-            SceneManager.activeScene?.Components.Remove(component);
+            SceneManager.ActiveScene?.Components.Remove(component);
         }));
     }
 

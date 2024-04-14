@@ -2,8 +2,8 @@
 
 public interface IUpdate
 {
-    public void Update();
-    public void FixedUpdate();
-    public void AfterUpdate();
-    public void Draw();
+    protected virtual void Update() {}
+    protected virtual void FixedUpdate() {}
+    protected virtual void AfterUpdate() {}
+    protected virtual void Draw() {}
 }
