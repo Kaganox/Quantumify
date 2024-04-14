@@ -16,7 +16,7 @@ public class Collision2D : Component
     public Collision2D(Node2D node, BodyType bodyType = BodyType.Dynamic) : base(node)
     {
         
-        World world = ((Simulation2D)SceneManager.activeScene.Simulation).World;
+        World world = ((Simulation2D)SceneManager.ActiveScene.Simulation).World;
         Vector2 position = new Vector2(node.Position.X, node.Position.Y);
         _body = world.CreateBody(position,node.Rotation,bodyType);
         _body.Mass = 1000;

@@ -31,11 +31,6 @@ namespace KaganoEngine.Nodes
             }
         }
 
-        public override Dimension NodeDimension()
-        {
-            return Dimension._3D;
-        }
-
         public override void Draw()
         {
             if (Model != null)

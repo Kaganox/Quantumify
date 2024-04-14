@@ -10,33 +10,33 @@ namespace KaganoEngine.Scenes;
 
 public static class SceneManager 
 {
-    public static Scene? activeScene;
+    public static Scene? ActiveScene;
 
 
     public static void ChangeScene(Scene? scene)
     {
-        SceneManager.activeScene?.Dispose();
-        SceneManager.activeScene = scene;
+        SceneManager.ActiveScene?.Dispose();
+        SceneManager.ActiveScene = scene;
     }
 
     internal static void Update()
     {
-        activeScene?.Update();
+        ActiveScene?.Update();
     }
 
     
     internal static void AfterUpdate()
     {
-        activeScene?.Update();
+        ActiveScene?.Update();
     }
     
     internal static void FixedUpdate()
     {
-        activeScene?.FixedUpdate();
+        ActiveScene?.FixedUpdate();
     }
 
     internal static void Draw()
     {
-        activeScene?.Draw();
+        ActiveScene?.Draw();
     }
 }

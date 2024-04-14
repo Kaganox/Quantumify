@@ -12,20 +12,18 @@ using System.Threading.Tasks;
 using KaganoEngine.Components;
 using KaganoEngine.Physics.Jitter;
 using nkast.Aether.Physics2D.Dynamics;
-using Vector2 = nkast.Aether.Physics2D.Common.Vector2;
+using Vector2A = nkast.Aether.Physics2D.Common.Vector2;
 
 namespace Test;
 
 public class Player : Node2D,SaveAble
 {
     private Collision2D Collision2D;
-    public Player() : base()
-    {
-        Position = new Vector3(400, 640,0);
+    public Player() : base(new Vector2(400, 640)) {
         Program program = Program.program;
-        texture = program.contentManager.Load<Texture2D>("player.png");
+        //Texture = program.contentManager.Load<Texture2D>("player.png");
         program.saveFile.AddSaveAble(this);
-        color = Color.White;
+        Color = Color.Gray;
         Size = new Vector3(128, 128, 0);
         Collision2D = new Collision2D(this);
         //AddComponent(Collision2D);
@@ -36,7 +34,7 @@ public class Player : Node2D,SaveAble
 
         Vector3 v = Input.Vector2Input() * 0.1f;
 
-        _body.Position += new Vector2(v.X,v.Y);
+        Body.Position += new Vector2A(v.X, v.Y);
         //Collision2D.AddVelocity(new Vector2(v.X, v.Y));
         Rotation = RotateToNode(Program.enemy);
     }

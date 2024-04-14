@@ -25,8 +25,6 @@ public class Game : IDisposable
         game = this;
     }
 
-
-
     /// <summary>
     /// The game loop
     /// </summary>
@@ -39,11 +37,11 @@ public class Game : IDisposable
         SceneCamera.Init();
         Raylib.InitWindow(800, 480, "Hello World"); //TODO: create Window class with Title, Width, Height
         //Raylib.SetWindowIcon();
-        SceneManager.activeScene = scene2d ?? new Scene(Dimension._2D,new Physic2DSettings());
+        SceneManager.ActiveScene = scene2d ?? new Scene(Dimension._2D,new Physic2DSettings());
 
         if (dimension == Dimension._3D)
         {
-            SceneManager.activeScene = scene3d ?? new Scene(Dimension._3D,new Physics3DSettings());
+            SceneManager.ActiveScene = scene3d ?? new Scene(Dimension._3D,new Physics3DSettings());
         }
         contentManager = new ContentManager();
         OnRun();
