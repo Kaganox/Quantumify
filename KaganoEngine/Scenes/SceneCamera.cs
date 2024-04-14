@@ -19,7 +19,6 @@ public class SceneCamera
         Camera = new Camera();
     }
 
-
     public static void SetActiveCamera(Camera camera)
     {
         Camera = camera;

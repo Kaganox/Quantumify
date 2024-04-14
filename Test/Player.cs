@@ -28,7 +28,7 @@ public class Player : Node2D,SaveAble
         color = Color.White;
         Size = new Vector3(128, 128, 0);
         Collision2D = new Collision2D(this);
-        AddComponent(Collision2D);
+        //AddComponent(Collision2D);
     }
     public override void Update()
     {
@@ -36,7 +36,8 @@ public class Player : Node2D,SaveAble
 
         Vector3 v = Input.Vector2Input() * 0.1f;
 
-        Collision2D.AddVelocity(new Vector2(v.X, v.Y));
+        _body.Position += new Vector2(v.X,v.Y);
+        //Collision2D.AddVelocity(new Vector2(v.X, v.Y));
         Rotation = RotateToNode(Program.enemy);
     }
 

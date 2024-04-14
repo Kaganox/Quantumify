@@ -12,11 +12,11 @@ namespace Test;
 
 public class Enemy : Node2D
 {
-    public Enemy() : base()
+    public Enemy() : base(bodyType:BodyType.Static)
     {
         Position = new Vector3(350, 640 + 148,0);
         Size = new Vector3(128*5, 128, 0);
         
-        AddComponent(new Collision2D(this,BodyType.Static));
+        //AddComponent(new Collision2D(this,BodyType.Static));
     }
 }
