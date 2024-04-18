@@ -10,7 +10,7 @@ using KaganoEngine.Physics.Jitter;
 
 public class Game : IDisposable
 {
-    public static Game game;
+    public static Game Instance { get; private set; }
     public ContentManager contentManager { get; private set; }
     private float _fixedTimeStep; //TODO: create Settings
     private double _timer;
@@ -22,48 +22,29 @@ public class Game : IDisposable
     {
         this._fixedTimeStep = 1.0f / 60.0f;
         this.dimension = dimension;
-        game = this;
+        Instance = this;
     }
 
     /// <summary>
     /// The game loop
     /// </summary>
     /// <param name="action"></param>
-    public void Run(Scene scene2d = null,Scene scene3d = null)
+    public void Run(Scene? scene = null)
     {
         Logger.SetupRaylibLogger();
         Logger.Info("Hello World!");
 
         SceneCamera.Init();
         Raylib.InitWindow(800, 480, "Hello World"); //TODO: create Window class with Title, Width, Height
-        //Raylib.SetWindowIcon();
-        SceneManager.ActiveScene = scene2d ?? new Scene(Dimension._2D,new Physic2DSettings());
-
-        if (dimension == Dimension._3D)
-        {
-            SceneManager.ActiveScene = scene3d ?? new Scene(Dimension._3D,new Physics3DSettings());
-        }
+        
         contentManager = new ContentManager();
+        
         OnRun();
-
-        Camera3D camera = new Camera3D();
-        camera.Position = new Vector3(10, 10, 10); // Camera position
-        camera.Target = new Vector3(0, 0, 0);      // Camera looking at point
-        camera.Up = Vector3.UnitY;          // Camera up vector (rotation towards target)
-        camera.FovY = 45.0f;                                // Camera field-of-view Y
-        camera.Projection = CameraProjection.Perspective;             // Camera mode type
-         // Set the camera = camera;
-
+        SceneManager.ActiveScene = scene;
         Init();
 
         while (!Raylib.WindowShouldClose())
         {
-            bool is3D = dimension == Dimension._3D;
-            if (is3D)
-            {
-                Camera3D camera3D = SceneCamera.Camera.GetCamera3D();
-                Raylib.UpdateCamera(ref camera3D, CameraMode.Orbital);
-            }
 
             Update();
             AfterUpdate();
@@ -77,20 +58,16 @@ public class Game : IDisposable
             Raylib.BeginDrawing();
             Raylib.ClearBackground(Raylib_cs.Color.RayWhite);
             Draw();
-            //Raylib.DrawGrid(10, 1);
 
             Raylib.EndDrawing();
-
         }
         OnClose();
     }
-
-
+    
     public virtual void OnRun()
     {
 
     }
-
 
     /// <summary>
     /// Is callen for game loop, here will be loaded files (Textures, Fonts, etc.), create Nodes and objects
@@ -99,8 +76,7 @@ public class Game : IDisposable
     {
         
     }
-
-
+    
     /// <summary>
     /// Runs every frame
     /// </summary>
@@ -108,8 +84,7 @@ public class Game : IDisposable
     {
         SceneManager.Update();
     }
-
-
+    
     /// <summary>
     /// Runs after Update (for redendering etc)
     /// </summary>
@@ -126,7 +101,6 @@ public class Game : IDisposable
         SceneManager.FixedUpdate();
     }
 
-
     /// <summary>
     /// Draws everyframe
     /// </summary>
@@ -135,8 +109,7 @@ public class Game : IDisposable
         SceneManager.Draw();
         Raylib.DrawText("Hello, world!", 12, 12, 20, Raylib_cs.Color.Black);
     }
-
-
+    
     /// <summary>
     /// Runs by closing the game
     /// </summary>
@@ -145,7 +118,6 @@ public class Game : IDisposable
         Logger.Info("Goodbye, World!");
     }
 
-
     /// <summary>
     /// Will remove resources (textures, fonts, etc.) from your memory
     /// </summary>
@@ -153,7 +125,4 @@ public class Game : IDisposable
     {
         Raylib.CloseWindow();
     }
-
-
-
 }

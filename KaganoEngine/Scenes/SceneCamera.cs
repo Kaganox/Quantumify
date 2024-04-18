@@ -11,16 +11,16 @@ namespace KaganoEngine.Scenes;
 
 public class SceneCamera
 {
-    public static Camera Camera { get; private set; }
+    public static Cam3D Camera { get; private set; }
 
 
     public static void Init()
     {
-        Camera = new Camera();
+        Camera = new Cam3D();
     }
 
-    public static void SetActiveCamera(Camera camera)
+    public static void SetActiveCamera(Cam3D cam3D)
     {
-        Camera = camera;
+        Camera = cam3D;
     }
 }

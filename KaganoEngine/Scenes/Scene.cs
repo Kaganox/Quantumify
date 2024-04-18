@@ -4,7 +4,6 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using KaganoEngine.Components;
 using KaganoEngine.Nodes;
 using KaganoEngine.Physics;
 using KaganoEngine.Physics.Aether;
@@ -16,7 +15,6 @@ namespace KaganoEngine.Scenes;
 public class Scene
 {
     public List<Node> Nodes = new List<Node>();
-    public List<Component> Components = new List<Component>();
     public readonly ISimulation Simulation;
 
     private Dimension _dimension;
@@ -43,8 +41,8 @@ public class Scene
 
     public void FixedUpdate()
     {
-        Nodes.ForEach(node => node.FixedUpdate());
         Simulation.Step(1f / 60f);
+        Nodes.ForEach(node => node.FixedUpdate());
     }
 
     public void AfterUpdate()

@@ -9,23 +9,19 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using KaganoEngine.Components;
 using KaganoEngine.Physics.Jitter;
 using nkast.Aether.Physics2D.Dynamics;
 using Vector2A = nkast.Aether.Physics2D.Common.Vector2;
 
 namespace Test;
 
-public class Player : Node2D,SaveAble
+public class Player : RigidBody2D,SaveAble
 {
-    private Collision2D Collision2D;
-    public Player() : base(new Vector2(400, 640)) {
-        Program program = Program.program;
-        //Texture = program.contentManager.Load<Texture2D>("player.png");
-        program.saveFile.AddSaveAble(this);
+    public Player() : base(new Vector2(400, 640))
+    {
+        ((TestGame)Game.Instance).SaveFile.AddSaveAble(this);
         Color = Color.Gray;
         Size = new Vector3(128, 128, 0);
-        Collision2D = new Collision2D(this);
         //AddComponent(Collision2D);
     }
     public override void Update()
@@ -33,10 +29,9 @@ public class Player : Node2D,SaveAble
         base.Update();
 
         Vector3 v = Input.Vector2Input() * 0.1f;
-
         Body.Position += new Vector2A(v.X, v.Y);
         //Collision2D.AddVelocity(new Vector2(v.X, v.Y));
-        Rotation = RotateToNode(Program.enemy);
+        //Rotation = RotateToNode(TestGame.Enemy);
     }
 
     public override void Collide(Node interact)

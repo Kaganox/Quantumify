@@ -1,5 +1,4 @@
-﻿using KaganoEngine.Components;
-using KaganoEngine.Scenes;
+﻿using KaganoEngine.Scenes;
 using Newtonsoft.Json;
 using Raylib_cs;
 using System;
@@ -11,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace KaganoEngine.Nodes;
 
-public abstract class Node : IUpdate
+public abstract class Node : IUpdate,IDisposable
 {
-    private List<Component> components = new List<Component>();
     internal List<string> tags = new List<string>();
 
     public Vector3 Position = new Vector3(0, 0, 0),
@@ -24,6 +22,8 @@ public abstract class Node : IUpdate
     public string uuid;
     public string parentUUID;
 
+    private bool _isReady;
+    
     private List<Node> children = new List<Node>();
 
     private Node? parent;
@@ -36,11 +36,18 @@ public abstract class Node : IUpdate
         SceneManager.ActiveScene?.Nodes.Add(this);
     }
     
+    
+    /// <summary>
+    /// Runs in the first tick after math position
+    /// </summary>
+    public virtual void Ready() {
+        
+    }
+    
     /// <summary>
     /// Runs every frame
     /// </summary>
     public virtual void Update() {
-        components.ForEach(component => component.Update());
         
         GlobalPosition = Position;
         
@@ -50,15 +57,12 @@ public abstract class Node : IUpdate
     }
 
     public virtual void AfterUpdate() {
-        components.ForEach(component => component.AfterUpdate());
     }
 
     public virtual void FixedUpdate() {
-        components.ForEach(component => component.FixedUpdate());
     }
 
     public virtual void Draw() {
-        components.ForEach(component => component.Draw());
 
     }
 
@@ -108,6 +112,7 @@ public abstract class Node : IUpdate
         }
         return false;
     }
+
     public void AddTag(string tag)
     {
         tags.Add(tag);
@@ -125,7 +130,6 @@ public abstract class Node : IUpdate
     {
         Scene? current = SceneManager.ActiveScene;
         current?.Nodes.Remove(this);
-        components.ForEach(component => current?.Components.Remove(component));
     }
 
     /// <summary>
@@ -137,30 +141,14 @@ public abstract class Node : IUpdate
         return JsonConvert.SerializeObject(this);
     }
 
-    public void AddComponent(params Component[] components)
-    {
-        components.ToList().ForEach((Action<Component>)(component =>
-        {
-            this.components.Add(component);
-            SceneManager.ActiveScene?.Components.Add(component);
-        }));
-    }
-
-    public void RemoveComponent(params Component[] component)
-    {
-        components.ToList().ForEach((Action<Component>)(component =>
-        {
-            components.Remove(component);
-            SceneManager.ActiveScene?.Components.Remove(component);
-        }));
-    }
-
-    public List<Component> GetComponents()
-    {
-        return components;
-    }
-
     public virtual void Collide(Node interact)
     {
+    }
+    
+    
+
+    public virtual void Dispose()
+    {
+        
     }
 }

@@ -8,15 +8,13 @@ namespace KaganoEngine.Nodes
         public Model? Model;
         public Texture2D? Texture;
         public Color Color;
-        public float RotationAxis;
 
-
-        public Vector3 Rotation;
+        public Quaternion Rotation;
         
         public Node3D() : base()
         {
             Color = Color.White;
-            RotationAxis = 0;
+            Rotation = new Quaternion();
             //Rotation = new Vector3(0, 0, 0);
         }
 
@@ -31,11 +29,16 @@ namespace KaganoEngine.Nodes
             }
         }
 
-        public override void Draw()
+        public override unsafe void Draw()
         {
             if (Model != null)
             {
-                Raylib.DrawModelEx(Model.Value, Position, Rotation, RotationAxis, Scale, Color);
+                Vector3 axis;
+                float angle;
+           
+                Raymath.QuaternionToAxisAngle(this.Rotation, &axis, &angle);
+                
+                Raylib.DrawModelEx(Model.Value, GlobalPosition, axis, angle * Raylib.RAD2DEG, Scale, Color);
             }
         }
     }
