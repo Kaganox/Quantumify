@@ -1,7 +1,7 @@
-﻿using KaganoEngine;
-using KaganoEngine.Config;
-using KaganoEngine.Manager;
-using KaganoEngine.Nodes;
+﻿using Quantumify;
+using Quantumify.Config;
+using Quantumify.Manager;
+using Quantumify.Nodes;
 using Raylib_cs;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,8 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
-using KaganoEngine.Physics.Jitter;
+using Quantumify.Nodes.Nodes2D;
+using Quantumify.Physics.Jitter;
 using nkast.Aether.Physics2D.Dynamics;
 using Vector2A = nkast.Aether.Physics2D.Common.Vector2;
 

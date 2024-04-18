@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KaganoEngine\KaganoEngine.csproj" />
+    <ProjectReference Include="..\Quantumify\Quantumify.csproj" />
   </ItemGroup>
 
 	<ItemGroup>

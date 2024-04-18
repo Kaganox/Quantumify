@@ -1,13 +1,13 @@
-﻿using KaganoEngine.Nodes;
-using Raylib_cs;
-using System.Numerics;
+﻿using System.Numerics;
 using Jitter2.Collision.Shapes;
-using Test;
-using KaganoEngine;
-using KaganoEngine.Config;
-using KaganoEngine.Physics.Aether;
-using KaganoEngine.Physics.Jitter;
-using KaganoEngine.Scenes;
+using Quantumify;
+using Quantumify.Config;
+using Quantumify.Nodes.Nodes3D;
+using Quantumify.Physics.Aether;
+using Quantumify.Scenes;
+using Raylib_cs;
+
+namespace Test;
 
 public partial class TestGame : Game
 {
@@ -52,16 +52,16 @@ public partial class TestGame : Game
         List<Shape> shapes = new List<Shape>();
         shapes.Add(new BoxShape(1,1,1));
         
-       /* RigidBody3D node = new(shapes)
-        {
-            Texture = contentManager.Load<Texture2D>("new.png"),
-            Model = contentManager.Load<Model>("model.glb"),
-            Size = new Vector3(1, 1, 1),
-            Scale = new Vector3(1f, 1f, 1f),
-            Rotation = Quaternion.Identity,
-            Color = Color.White,
-        };
-        node.SetMaterialTexture();*/
+        /* RigidBody3D node = new(shapes)
+    {
+        Texture = contentManager.Load<Texture2D>("new.png"),
+        Model = contentManager.Load<Model>("model.glb"),
+        Size = new Vector3(1, 1, 1),
+        Scale = new Vector3(1f, 1f, 1f),
+        Rotation = Quaternion.Identity,
+        Color = Color.White,
+    };
+    node.SetMaterialTexture();*/
     }
 
     public override void OnClose()
