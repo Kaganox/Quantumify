@@ -35,9 +35,9 @@ public class Player : RigidBody2D,SaveAble
         //Rotation = RotateToNode(TestGame.Enemy);
     }
 
-    public override void Collide(Node interact)
+    public override void CollisionExit(Node node)
     {
-        if(interact is Enemy enemy)
+        if(node is Enemy enemy)
         {
             Logger.Warn("HIT");
         }

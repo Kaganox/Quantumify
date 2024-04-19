@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Quantumify;
 
-public class KaganoRandom
+public class Rand
 {
     private static Random random = new Random();
     

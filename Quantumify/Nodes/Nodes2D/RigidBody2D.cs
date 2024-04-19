@@ -9,15 +9,17 @@ namespace Quantumify.Nodes.Nodes2D;
 
 public class RigidBody2D : Node2D
 {
-
+    private List<Node> Collides;
     public World World => ((Simulation2D)SceneManager.ActiveScene?.Simulation!).World;
     private bool _hadSetuped;
     public Body? Body;
     public BodyType BodyType;
+    public bool Enter;
     public RigidBody2D(Vector2 pos, Texture2D? texture = null, Color? color = default, BodyType bodyType = BodyType.Dynamic) : base(pos, texture, color)
     {
         this.BodyType = bodyType;
         _hadSetuped = false;
+        Collides = new List<Node>();
     }
 
     public override void Update()
@@ -26,6 +28,7 @@ public class RigidBody2D : Node2D
 
         if (!_hadSetuped)
         {
+            Ready();
             SetupPhysics();
             _hadSetuped = true;
         }
@@ -53,12 +56,65 @@ public class RigidBody2D : Node2D
         this.Body.CreateRectangle(this.Size.X*this.Scale.X, this.Size.Y*this.Scale.X, 0,new Vector2A(size.X,0)/2);
         //this.Body.CreateCircle(System.Drawing.Size.X/2,pos+size);
 
+
+        this.Body.OnCollision += (sender, other, contact) =>
+        {
+            RigidBody2D node = GetNodeFromFixture(other);
+            if (!Collides.Contains(node))
+            {
+                Collides.Add(node);
+                CollisionEnter(node);
+                return !(this.Enter || node.Enter);
+            }
+            return true;
+        };
+
+        this.Body.OnSeparation += (sender, other, contact) =>
+        {
+
+            RigidBody2D node = GetNodeFromFixture(other);
+            if (Collides.Contains(node))
+            {
+                Collides.Remove(node);
+                CollisionExit(node);
+            }
+        };
         this.Body.Mass = 1000;
+    }
+
+    public RigidBody2D GetNodeFromFixture(Fixture fixture)
+    {
+        foreach (var node in SceneManager.ActiveScene!.Nodes)
+        {
+            if (node is RigidBody2D rigidBody2D)
+            {
+                if (fixture.Body == rigidBody2D.Body)
+                {
+                    return rigidBody2D;
+                }
+            }
+        }
+        return default!;
+    }
+
+    public virtual void CollisionEnter(Node node)
+    {
+        
+    }
+
+    public virtual void CollisionExit(Node node)
+    {
+        
     }
 
     public override void Draw()
     {
         base.Draw();
+    }
+    
+    public override void Ready()
+    {
+        base.Ready();
     }
 
     public override void Dispose()
