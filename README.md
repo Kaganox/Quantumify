@@ -3,7 +3,9 @@
 Need Help? [Join the discord](https://dsc.gg/kagano)
 
 ![grafik](https://raw.githubusercontent.com/PizzaGame01/Quantumify/master/Quantumify/content/icon.png)
-# Installation - [Nuget](https://www.nuget.org/packages/Quantumify/1.0.1)
+
+Installation - [Nuget](https://www.nuget.org/packages/Quantumify/1.0.1)
+===
 ```
 dotnet add package Quantumify --version 1.0.0
 ```

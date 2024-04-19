@@ -11,7 +11,7 @@ public class TileMap : Node2D
     public int TileSize;
     //layer,position, atlas
     private Dictionary<int,Dictionary<int, Dictionary<int,Vector2>>> _tiles;
-    public unsafe TileMap(List<Image> layers, Dictionary<int,Vector2> atlas) : base(new Vector2(0,0),null,new Color(0,0,0,0))
+    public unsafe TileMap(List<Image> layers, Dictionary<int,Vector2> atlas) : base(null,new Color(0,0,0,0))
     {
         
         Image image = default;

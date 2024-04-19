@@ -15,7 +15,7 @@ public class RigidBody2D : Node2D
     public Body? Body;
     public BodyType BodyType;
     public bool Enter;
-    public RigidBody2D(Vector2 pos, Texture2D? texture = null, Color? color = default, BodyType bodyType = BodyType.Dynamic) : base(pos, texture, color)
+    public RigidBody2D(Texture2D? texture = null, Color? color = default, BodyType bodyType = BodyType.Dynamic) : base(texture, color)
     {
         this.BodyType = bodyType;
         _hadSetuped = false;
@@ -28,8 +28,8 @@ public class RigidBody2D : Node2D
 
         if (!_hadSetuped)
         {
-            Ready();
             SetupPhysics();
+            Ready();
             _hadSetuped = true;
         }
         
@@ -77,7 +77,6 @@ public class RigidBody2D : Node2D
 
         this.Body.OnSeparation += (sender, other, contact) =>
         {
-
             RigidBody2D node = GetNodeFromFixture(other);
             if (Collides.Contains(node))
             {

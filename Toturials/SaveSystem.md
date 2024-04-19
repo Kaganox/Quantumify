@@ -1,17 +1,16 @@
 ```cs
-public partial class MyGame : Game
+public class TestGame : Game
 {
     public SaveFile saveFile;
-    public static MyGame mygame;
+    
     public static void Main(string[] args)
     {
-        new MyGame();
+        new TestGame();
     }
 
-    public MyGame() : base(Dimension._3D)
+    public TestGame() : base(Dimension._3D)
     {
-        mygame = this;
-        Run();
+        Run(new Scene(dimension,new Physic2DSettings?()));
     }
 
     public override void Init()
@@ -41,7 +40,14 @@ public partial class MyGame : Game
 }
 
 ```
-
+Add this to your project to make able to load files like textures (png)
+```xml
+<ItemGroup>
+    <Content Include="content/**/*">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+</ItemGroup>
+```
 
 ```cs
 public class Player : Node2D,SaveAble // Implement Saveable
@@ -49,7 +55,7 @@ public class Player : Node2D,SaveAble // Implement Saveable
     public Player() : base()
     {
         MyGame mygame = MyGame.mygame;
-        texture = mygame.contentManager.Load<Texture2D>("player.png");
+        texture = mygame.contentManager.Load<Texture2D>("player.png"); // Add the xml up (loads from "content/player.png")
         mygame.saveFile.AddSaveAble(this); // Register the object for saving
         color = Color.White;
         Size = new Vector3(128, 128, 0);
@@ -60,7 +66,38 @@ public class Player : Node2D,SaveAble // Implement Saveable
         
         Position += Input.Vector2Input()*0.1f;
     }
-    public NBT Write(NBT nbt) // Saves Position
+
+}
+```
+
+
+```cs
+public class Player : RigidBody2D
+{
+    private float _speed = 0.01f
+        
+    public Player() : base()
+    {
+        Color = Color.Gray;
+        Size = new Vector3(128, 128, 0);
+        ZIndex = 1;
+    }
+    
+    public override void Update()
+    {
+        base.Update();
+
+        Vector3 v = Input.Vector2Input() * _speed; // WASD vector * SPEED
+        Body.Position += new Vector2A(v.X, v.Y); // Add it to the Physic Body
+    }
+    
+    public override void Ready()
+    {
+        base.Ready();
+        Body.Position = new Vector2A(0,-Size.Y); // set in on the top of the floor
+    }
+    
+        public NBT Write(NBT nbt) // Saves Position
     {
         nbt.SetFloat("x", Position.X);
         nbt.SetFloat("y", Position.Y);
@@ -80,3 +117,4 @@ public class Player : Node2D,SaveAble // Implement Saveable
     }
 }
 ```
+

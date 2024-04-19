@@ -13,7 +13,7 @@ namespace Quantumify.Nodes;
 public abstract class Node : IUpdate,IDisposable
 {
     internal List<string> tags = new List<string>();
-
+    public int ZIndex { get; set; }
     public Vector3 Position = new Vector3(0, 0, 0),
                    Scale = new Vector3(1, 1, 1),
                    Size = new Vector3(50, 50, 0),
@@ -38,12 +38,17 @@ public abstract class Node : IUpdate,IDisposable
     
     
     /// <summary>
-    /// Runs in the first tick after math position
+    /// Does called if object is ready
     /// </summary>
     public virtual void Ready() {
         
     }
-    
+
+    public virtual void Overlay()
+    {
+        
+    }
+
     /// <summary>
     /// Runs every frame
     /// </summary>
@@ -130,6 +135,7 @@ public abstract class Node : IUpdate,IDisposable
     {
         Scene? current = SceneManager.ActiveScene;
         current?.Nodes.Remove(this);
+        current?.ToDispose.Add(this);
     }
 
     /// <summary>

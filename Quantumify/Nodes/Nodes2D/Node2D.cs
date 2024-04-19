@@ -15,8 +15,7 @@ public class Node2D : Node {
     /// <summary>
     /// Represents a 2D node in the Quantumify.
     /// </summary>
-    public Node2D(Vector2 pos, Texture2D? texture = null, Color? color = default) {
-        this.GlobalPosition = new Vector3(pos.X, pos.Y, 0);
+    public Node2D(Texture2D? texture = null, Color? color = default) : base() {
         this.Texture = texture;
         this.Color = color ?? Color.White;
     }

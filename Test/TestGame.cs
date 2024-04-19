@@ -12,7 +12,7 @@ namespace Test;
 public partial class TestGame : Game
 {
     public SaveFile SaveFile;
-    public static Enemy? Enemy;
+    public static Floor? Enemy;
     public static Texture2D test;
     public static void Main(string[] args)
     {
@@ -29,10 +29,10 @@ public partial class TestGame : Game
 
         base.Init();
         //Texture2D texture = contentManager.Load<Texture2D>("content/player.png");
-        Console.WriteLine(Environment.CurrentDirectory + "/content/save.dat");
-        SaveFile = new(Environment.CurrentDirectory + "/content/save.dat");
-        SaveFile.RegisterTyp<Player>();
-        test = contentManager.Load<Texture2D>("test.png");
+        //Console.WriteLine(Environment.CurrentDirectory + "/content/save.dat");
+        //SaveFile = new(Environment.CurrentDirectory + "/content/save.dat");
+        //SaveFile.RegisterTyp<Player>();
+        //test = contentManager.Load<Texture2D>("test.png");
         Enemy = new()
         {
             
@@ -46,11 +46,16 @@ public partial class TestGame : Game
         {
             Position = new Vector3(10, 10, 10),
         };
+        for (int i = 0; i < 10; i++)
+        {
+            Coin coin = new(i);
+        }
+        
         player.AddChild(cam3D);
         cam3D.SetActiveCamera();
 
-        List<Shape> shapes = new List<Shape>();
-        shapes.Add(new BoxShape(1,1,1));
+        //List<Shape> shapes = new List<Shape>();
+        //shapes.Add(new BoxShape(1,1,1));
         
         /* RigidBody3D node = new(shapes)
     {
@@ -66,6 +71,5 @@ public partial class TestGame : Game
 
     public override void OnClose()
     {
-        SaveFile.Write();
     }
 }

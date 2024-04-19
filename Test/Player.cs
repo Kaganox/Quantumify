@@ -18,11 +18,13 @@ namespace Test;
 
 public class Player : RigidBody2D,SaveAble
 {
-    public Player() : base(new Vector2(400, 640))
+    public int Coins;
+    public Player() : base()
     {
-        ((TestGame)Game.Instance).SaveFile.AddSaveAble(this);
+       // ((TestGame)Game.Instance).SaveFile.AddSaveAble(this);
         Color = Color.Gray;
         Size = new Vector3(128, 128, 0);
+        ZIndex = 1;
         //AddComponent(Collision2D);
     }
     public override void Update()
@@ -31,13 +33,28 @@ public class Player : RigidBody2D,SaveAble
 
         Vector3 v = Input.Vector2Input() * 0.1f;
         Body.Position += new Vector2A(v.X, v.Y);
-        //Collision2D.AddVelocity(new Vector2(v.X, v.Y));
-        //Rotation = RotateToNode(TestGame.Enemy);
+    }
+
+    public override void Ready()
+    {
+        base.Ready();
+        Body.Position = new Vector2A(0,-Size.Y);
+    }
+
+    public override void Draw()
+    {
+        base.Draw();
+    }
+
+    public override void Overlay()
+    {
+        base.Overlay();
+        Raylib.DrawText("Coins: " + Coins, 0, 0,25,Color.Black);
     }
 
     public override void CollisionExit(Node node)
     {
-        if(node is Enemy enemy)
+        if(node is Floor enemy)
         {
             Logger.Warn("HIT");
         }

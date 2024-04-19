@@ -103,7 +103,7 @@ public class Game : IDisposable
     public virtual void Draw()
     {
         SceneManager.Draw();
-        Raylib.DrawText("Hello, world!", 12, 12, 20, Raylib_cs.Color.Black);
+        //aylib.DrawText("Hello, world!", 12, 12, 20, Raylib_cs.Color.Black);
     }
     
     /// <summary>

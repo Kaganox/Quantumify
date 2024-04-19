@@ -11,7 +11,7 @@ namespace Quantumify.Scenes;
 public static class SceneManager 
 {
     public static Scene? ActiveScene;
-
+    
 
     public static void ChangeScene(Scene? scene)
     {

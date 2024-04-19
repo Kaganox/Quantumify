@@ -15,6 +15,7 @@ namespace Quantumify.Scenes;
 public class Scene
 {
     public List<Node> Nodes = new List<Node>();
+    public List<IDisposable> ToDispose = new List<IDisposable>();
     public readonly ISimulation Simulation;
 
     private Dimension _dimension;
@@ -36,7 +37,8 @@ public class Scene
 
     public void Update()
     {
-        
+        ToDispose.ForEach(obj => obj.Dispose());
+        ToDispose.Clear();
         Nodes.ForEach(node => node.Update());
     }
 
@@ -53,20 +55,25 @@ public class Scene
 
     public void Draw()
     {
+        
+        List<Node> drawPritority = new List<Node>(Nodes);
+        drawPritority.Sort((a, b) => a.ZIndex.CompareTo(b.ZIndex));
         switch (_dimension)
         {
             case Dimension._2D:
                 Raylib.BeginMode2D(SceneCamera.Camera.GetCamera2D());
-                Nodes.ForEach(node => node.Draw());
+                drawPritority.ForEach(node => node.Draw());
                 Raylib.EndMode2D();
                 break;
             case Dimension._3D:
                 Raylib.BeginMode3D(SceneCamera.Camera.GetCamera3D());
                 Raylib.DrawGrid(10, 1);
-                Nodes.ForEach(node => node.Draw());
+                drawPritority.ForEach(node => node.Draw());
                 Raylib.EndMode3D();
                 break;
         }
+        
+        drawPritority.ForEach(node => node.Overlay());
     }
 
     public List<Node> GetNodesByTag(string tag)
