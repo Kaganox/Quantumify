@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,9 +26,10 @@ public class NBT
     public double? GetDouble(string key) => HasKey(key) ? double.Parse(data[key].ToString()!) : LogError<double>(key, "double");
     public List<T>? GetList<T>(string key) => HasKey(key) ? Newtonsoft.Json.JsonConvert.DeserializeObject<List<T>>(data[key].ToString()!) : LogError<List<T>>(key, "list");
     public Dictionary<string, T>? GetDictionary<T>(string key)=> HasKey(key) ? Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, T>>(data[key].ToString()!) : LogError<Dictionary<string, T>>(key, "dictionary");
-    
+    public Vector3  GetVector3(string key) => HasKey(key) ? Newtonsoft.Json.JsonConvert.DeserializeObject<Vector3>(data[key].ToString()!) : LogError<Vector3>(key, "vector3");
 
 
+    public void SetVector3(string key, Vector3 value) { data.Add(key, Newtonsoft.Json.JsonConvert.SerializeObject(value)); }
     public void SetString(string key, string value) { data.Add(key, value); }
     public void SetInt(string key, int value) { data.Add(key, value); }
     public void SetLong(string key, long value) { data.Add(key, value); }

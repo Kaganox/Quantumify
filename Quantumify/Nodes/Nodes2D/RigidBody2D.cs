@@ -41,7 +41,13 @@ public class RigidBody2D : Node2D
 
         Position += newPosition;
     }
-    
+
+    public override void FixedUpdate()
+    {
+        base.FixedUpdate();
+        Collides.ForEach(node => this.Collide(node));
+    }
+
     public Vector3 BodyVector3() => new Vector3(Body.Position.X, Body.Position.Y,0);
     
     /// <summary>
@@ -63,9 +69,9 @@ public class RigidBody2D : Node2D
             if (!Collides.Contains(node))
             {
                 Collides.Add(node);
-                CollisionEnter(node);
                 return !(this.Enter || node.Enter);
             }
+            CollisionEnter(node);
             return true;
         };
 
@@ -76,8 +82,8 @@ public class RigidBody2D : Node2D
             if (Collides.Contains(node))
             {
                 Collides.Remove(node);
-                CollisionExit(node);
             }
+            CollisionExit(node);
         };
         this.Body.Mass = 1000;
     }
@@ -106,7 +112,7 @@ public class RigidBody2D : Node2D
     {
         
     }
-
+    
     public override void Draw()
     {
         base.Draw();
