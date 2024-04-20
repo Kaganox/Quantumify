@@ -2,12 +2,16 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using Raylib_cs;
+using Riptide.Utils;
 
 namespace Quantumify;
 
 public static class Logger
 {
 
+    public delegate bool OnMessage(LogType type, string message, int skipFrames,ConsoleColor color);
+    public static event OnMessage? Message;
+    
     private static string TimeStamp()
     {
         return $"[{DateTime.Now.ToString("HH:mm")}] ";
@@ -20,6 +24,14 @@ public static class Logger
         StackFrame stackFrame = new StackFrame(skipFrames);
         string methodName = stackFrame.GetMethod().DeclaringType.ToString();
         int line = stackTrace.GetFrame(0).GetFileLineNumber();
+
+        if (Message != null)
+        {
+            if (Message.Invoke(LogType.Debug, message, skipFrames, color))
+            {
+                return;
+            }
+        }
         
         Console.ResetColor();
         Console.ForegroundColor = color;
@@ -54,8 +66,6 @@ public static class Logger
         {
             case TraceLogLevel.Debug:
                 Debug(message,3);
-        
-
                 break;
 
             case TraceLogLevel.Info:
@@ -75,5 +85,4 @@ public static class Logger
                 break;
         }
     }
-
 }

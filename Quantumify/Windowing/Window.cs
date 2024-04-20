@@ -19,7 +19,11 @@ public class Window
     /// <inheritdoc cref="Raylib.SetWindowMaxSize"/>
     public static void SetMaxSize(int width, int height) => Raylib.SetWindowMaxSize(width, height);
 
+    
+    /// <inheritdoc cref="Raylib.CloseWindow"/>
+    public static void Close() => Raylib.CloseWindow();
 
+    
     /// <inheritdoc cref="Raylib.GetScreenWidth"/>
     public static int GetWidth() => Raylib.GetScreenWidth();
     /// <inheritdoc cref="Raylib.GetScreenHeight"/>

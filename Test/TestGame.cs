@@ -21,7 +21,18 @@ public partial class TestGame : Game
 
     public TestGame() : base(Dimension._2D)
     {
+        
+        Logger.Message += (type, message, frames, color) =>
+        {
+            Console.WriteLine("TTTT");
+            return true;
+        };
         Run(new Scene(dimension,new Physic2DSettings?()));
+    }
+
+    public override void OnRun()
+    {
+        base.OnRun();
     }
 
     public override void Init()
@@ -46,7 +57,7 @@ public partial class TestGame : Game
         {
             Position = new Vector3(10, 10, 10),
         };
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 25; i++)
         {
             Coin coin = new(i);
         }

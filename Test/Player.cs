@@ -27,11 +27,11 @@ public class Player : RigidBody2D,SaveAble
         ZIndex = 1;
         //AddComponent(Collision2D);
     }
-    public override void Update()
+    public override void FixedUpdate()
     {
         base.Update();
 
-        Vector3 v = Input.Vector2Input() * 0.1f;
+        Vector3 v = Input.Vector2Input() * 5f;
         Body.Position += new Vector2A(v.X, v.Y);
     }
 

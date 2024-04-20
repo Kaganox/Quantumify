@@ -113,7 +113,7 @@ public class Game : IDisposable
     {
         Logger.Info("Goodbye, World!");
     }
-
+    
     /// <summary>
     /// Will remove resources (textures, fonts, etc.) from your memory
     /// </summary>
