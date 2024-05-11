@@ -21,12 +21,6 @@ public partial class TestGame : Game
 
     public TestGame() : base(Dimension._2D)
     {
-        
-        Logger.Message += (type, message, frames, color) =>
-        {
-            Console.WriteLine("TTTT");
-            return true;
-        };
         Run(new Scene(dimension,new Physic2DSettings?()));
     }
 

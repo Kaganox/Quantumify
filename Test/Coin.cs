@@ -51,11 +51,21 @@ public class Coin : RigidBody2D
         base.CollisionEnter(node);
         if (node is Player player)
         {
-            player.Coins += 3-type;
-            Destroy();
+            Collect();
         }
     }
 
+    public override void OnClicked()
+    {
+        Collect();
+    }
+
+    public void Collect()
+    {
+        Player.Instance.Coins += 3-type;
+        Destroy();
+    }
+    
     public override void Draw()
     {
         base.Draw();

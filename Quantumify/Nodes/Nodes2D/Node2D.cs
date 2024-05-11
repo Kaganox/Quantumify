@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using nkast.Aether.Physics2D.Dynamics;
 using Raylib_cs;
 
 namespace Quantumify.Nodes.Nodes2D;
@@ -10,7 +11,6 @@ public class Node2D : Node {
     
     public float Rotation;
     public Vector2? Origin;
-    
     
     /// <summary>
     /// Represents a 2D node in the Quantumify.

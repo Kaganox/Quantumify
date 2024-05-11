@@ -95,14 +95,12 @@ public class Rand
             }
         }
         int random = RangeInt(0, total);
-        Logger.Info("R " + random);
         int current = 0;
         foreach (KeyValuePair<int, T> entry in map)
         {
             current += entry.Key;
             if (random <= current)
             {
-                Logger.Info(random+"|"+ current);
                 return entry.Value;
             }
         }

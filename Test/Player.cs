@@ -19,8 +19,10 @@ namespace Test;
 public class Player : RigidBody2D,SaveAble
 {
     public int Coins;
+    public static Player Instance;
     public Player() : base()
     {
+        Instance = this;
        // ((TestGame)Game.Instance).SaveFile.AddSaveAble(this);
         Color = Color.Gray;
         Size = new Vector3(128, 128, 0);

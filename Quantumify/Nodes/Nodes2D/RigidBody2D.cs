@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Threading.Tasks.Dataflow;
 using nkast.Aether.Physics2D.Dynamics;
 using Quantumify.Physics.Aether;
 using Quantumify.Scenes;
@@ -15,6 +16,8 @@ public class RigidBody2D : Node2D
     public Body? Body;
     public BodyType BodyType;
     public bool Enter;
+    
+    public Vector2A Pos => Body?.Position ?? new Vector2A(0,0);
     public RigidBody2D(Texture2D? texture = null, Color? color = default, BodyType bodyType = BodyType.Dynamic) : base(texture, color)
     {
         this.BodyType = bodyType;
@@ -22,6 +25,7 @@ public class RigidBody2D : Node2D
         Collides = new List<Node>();
     }
 
+    
     public override void Update()
     {
         base.Update();
@@ -40,6 +44,20 @@ public class RigidBody2D : Node2D
         }
 
         Position += newPosition;
+
+
+        Vector2 v = SceneCamera.Camera.GetCamera2D().Target;
+        
+        //Raylib.DrawRectanglePro(rect, new Vector2(0, 0), 0,Color.Gold);
+        //Raylib.DrawCircle((int)Raylib.GetMousePosition().X,(int)Raylib.GetMousePosition().Y,10,Color.Red);
+        
+        
+        Rectangle rect = new Rectangle(GlobalPosition.X - v.X + Raylib.GetScreenWidth()/2, GlobalPosition.Y - v.Y + Raylib.GetScreenHeight()/2, Size.X, Size.Y);
+        if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),
+                rect)&&Raylib.IsMouseButtonReleased(MouseButton.Left))
+        {
+            this.OnClicked();
+        }
     }
 
     public override void FixedUpdate()
@@ -108,6 +126,11 @@ public class RigidBody2D : Node2D
     }
 
     public virtual void CollisionExit(Node node)
+    {
+        
+    }
+    
+    public virtual void OnClicked()
     {
         
     }

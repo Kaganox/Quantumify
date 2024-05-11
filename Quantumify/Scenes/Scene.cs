@@ -37,7 +37,15 @@ public class Scene
 
     public void Update()
     {
-        ToDispose.ForEach(obj => obj.Dispose());
+        ToDispose.ForEach(obj =>
+        {
+            if (obj is Node node)
+            {
+                Nodes.Remove(node);
+            }
+            
+            obj.Dispose();
+        });
         ToDispose.Clear();
         Nodes.ForEach(node => node.Update());
     }
