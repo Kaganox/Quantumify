@@ -84,7 +84,7 @@ public partial class TestGame : Game
         Rotation = Quaternion.Identity,
         Color = Color.White,
     };
-    node.SetMaterialTexture();*/
+    */
     }
 
     public override void OnClose()
