@@ -13,6 +13,7 @@ public class ContentManager : IDisposable
         _processor = new Dictionary<Type, IProcessor>();
         _processor.Add(typeof(Texture2D), new TextureProcessor());
         _processor.Add(typeof(Model), new ModelProcessor());
+        _processor.Add(typeof(Image), new ImageProcessor());
     }
 
     public T Load<T>(string path)

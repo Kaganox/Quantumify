@@ -75,6 +75,33 @@ public class Rand
         return chance <= RangeInt(0, max);
     }
 
+    /// <summary>
+    /// Get Random element of List
+    /// </summary>
+    /// <param name="list"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T GetRandom<T>(List<T> list) => list.ElementAt(RangeInt(0, list.Count - 1));
+    
+    /// <summary>
+    /// Get Random element of array
+    /// </summary>
+    /// <param name="array"></param>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    public static T GetRandom<T>(T[] array) => GetRandom(array.ToList());
+    
+    
+    public void Shuffle<T>(ref List<T> list)
+    {
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = RangeInt(0, n + 1);
+            (list[k], list[n]) = (list[n], list[k]);
+        }
+    }
     
     /// <summary>
     /// set the privot chance by the key

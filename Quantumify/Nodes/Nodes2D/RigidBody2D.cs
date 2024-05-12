@@ -48,11 +48,11 @@ public class RigidBody2D : Node2D
 
         Vector2 v = SceneCamera.Camera.GetCamera2D().Target;
         
-        //Raylib.DrawRectanglePro(rect, new Vector2(0, 0), 0,Color.Gold);
         //Raylib.DrawCircle((int)Raylib.GetMousePosition().X,(int)Raylib.GetMousePosition().Y,10,Color.Red);
         
         
-        Rectangle rect = new Rectangle(GlobalPosition.X - v.X + Raylib.GetScreenWidth()/2, GlobalPosition.Y - v.Y + Raylib.GetScreenHeight()/2, Size.X, Size.Y);
+        Rectangle rect = new Rectangle(GlobalPosition.X - v.X + Raylib.GetScreenWidth()/2, GlobalPosition.Y - v.Y + Raylib.GetScreenHeight()/2, Size.X*Scale.X, Size.Y*Scale.Y);
+        Raylib.DrawRectanglePro(rect, new Vector2(0, 0), 0,Color.Gold);
         if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),
                 rect)&&Raylib.IsMouseButtonReleased(MouseButton.Left))
         {
@@ -63,7 +63,7 @@ public class RigidBody2D : Node2D
     public override void FixedUpdate()
     {
         base.FixedUpdate();
-        Collides.ForEach(node => this.Collide(node));
+        Collides.ForEach(this.Collide);
     }
 
     public Vector3 BodyVector3() => new Vector3(Body.Position.X, Body.Position.Y,0);

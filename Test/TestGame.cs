@@ -2,6 +2,7 @@
 using Jitter2.Collision.Shapes;
 using Quantumify;
 using Quantumify.Config;
+using Quantumify.Nodes.Nodes2D;
 using Quantumify.Nodes.Nodes3D;
 using Quantumify.Physics.Aether;
 using Quantumify.Scenes;
@@ -41,6 +42,18 @@ public partial class TestGame : Game
         Enemy = new()
         {
             
+        };
+
+        var atlas = new Dictionary<int, Vector2>()
+        {
+            [Raylib.ColorToInt(Color.Black)] = new Vector2(0, 0),
+            [Raylib.ColorToInt(Color.White)] = new Vector2(1, 0)
+        };
+        
+        TileMap tileMap = new(new List<Image>(){contentManager.Load<Image>("atlas.png")},
+            contentManager.Load<Texture2D>("tilemap.png"),atlas)
+        {
+            TileSize = 4
         };
         
         Player player = new()
