@@ -81,7 +81,6 @@ public partial class TestGame : Game
         Model = contentManager.Load<Model>("model.glb"),
         Size = new Vector3(1, 1, 1),
         Scale = new Vector3(1f, 1f, 1f),
-        Rotation = Quaternion.Identity,
         Color = Color.White,
     };
     */
