@@ -73,14 +73,8 @@ public partial class TestGame : Game
         cam3D.SetActiveCamera();
 
         //List<Shape> shapes = new List<Shape>();
-        //shapes.Add(new BoxShape(1,1,1));
-        
         /* RigidBody3D node = new(shapes)
     {
-        Texture = contentManager.Load<Texture2D>("new.png"),
-        Model = contentManager.Load<Model>("model.glb"),
-        Size = new Vector3(1, 1, 1),
-        Scale = new Vector3(1f, 1f, 1f),
         Color = Color.White,
     };
     */
