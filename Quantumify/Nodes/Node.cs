@@ -14,10 +14,10 @@ public abstract class Node : IUpdate,IDisposable
 {
     internal List<string> tags = new List<string>();
     public int ZIndex { get; set; }
-    public Vector3 Position = new Vector3(0, 0, 0),
-                   Scale = new Vector3(1, 1, 1),
-                   Size = new Vector3(50, 50, 0),
-                   GlobalPosition = new Vector3(0, 0, 0);
+    public Vector3 Position = new Vector3(0, 0, 0);
+    public Vector3 Scale = new Vector3(1, 1, 1);
+    public Vector3 Size = new Vector3(50, 50, 0);
+    public Vector3 GlobalPosition = new Vector3(0, 0, 0);
 
     public string uuid;
     public string parentUUID;

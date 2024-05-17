@@ -52,7 +52,7 @@ public class RigidBody2D : Node2D
         
         
         Rectangle rect = new Rectangle(GlobalPosition.X - v.X + Raylib.GetScreenWidth()/2, GlobalPosition.Y - v.Y + Raylib.GetScreenHeight()/2, Size.X*Scale.X, Size.Y*Scale.Y);
-        Raylib.DrawRectanglePro(rect, new Vector2(0, 0), 0,Color.Gold);
+        //Raylib.DrawRectanglePro(rect, new Vector2(0, 0), 0,Color.Gold);
         if (Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),
                 rect)&&Raylib.IsMouseButtonReleased(MouseButton.Left))
         {
@@ -77,7 +77,7 @@ public class RigidBody2D : Node2D
         Vector2A pos = new Vector2A(this.GlobalPosition.X, this.GlobalPosition.Y);
         Vector2A size = new Vector2A(this.Size.X * this.Scale.X, this.Size.Y * this.Scale.Y);
         this.Body = world.CreateBody(pos, this.Rotation, this.BodyType);
-        this.Body.CreateRectangle(this.Size.X*this.Scale.X, this.Size.Y*this.Scale.X, 0,new Vector2A(size.X,0)/2);
+        this.Body.CreateRectangle(this.Size.X*this.Scale.X, this.Size.Y*this.Scale.X, 0,new Vector2A(size.X,size.Y)/2);
         //this.Body.CreateCircle(System.Drawing.Size.X/2,pos+size);
 
 

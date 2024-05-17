@@ -1,13 +1,13 @@
-﻿Look License [here](LICENSE)
+﻿Look License [here](https://github.com/PizzaGame01/Quantumify/blob/master/LICENSE)
 
 Need Help? [Join the discord](https://dsc.gg/kagano)
 
 ![grafik](https://raw.githubusercontent.com/PizzaGame01/Quantumify/master/Quantumify/content/icon.png)
 
-Installation - [Nuget](https://www.nuget.org/packages/Quantumify/1.0.1)
+Installation - [Nuget](https://www.nuget.org/packages/Quantumify/1.0.3)
 ===
 ```
-dotnet add package Quantumify --version 1.0.0
+dotnet add package Quantumify --version 1.0.3
 ```
 
 # Used Libarys:
@@ -19,7 +19,7 @@ dotnet add package Quantumify --version 1.0.0
 
 # Get Started:
 # 2D Toturials:
-- [Simple 2D Player Movement](Toturials/SimpleMovement.md)
-- [How to use Save System](Toturials/SaveSystem.md)
+- [Simple 2D Player Movement](https://github.com/PizzaGame01/Quantumify/wiki/Player-Movement)
+- [How to use Save System](https://github.com/PizzaGame01/Quantumify/wiki/How-to-use-Save-System)
 # 3D Toturials:
 in progress
