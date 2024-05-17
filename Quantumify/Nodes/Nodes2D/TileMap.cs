@@ -18,14 +18,11 @@ public class TileMap : Node2D
     public delegate void Clicked(Tile tile,MouseButton button);
     public event Clicked OnClicked;
     
-    //layer,position, atlas
     public List<Tile> Tiles = new();
-    //private Dictionary<int,Dictionary<int, Dictionary<int,Vector2>>> _tiles;
     public unsafe TileMap(List<Image> layers, Texture2D atlas,Dictionary<int,Vector2> atlasMap) : base(null,new Color(0,0,0,0))
     {
         SceneManager.ActiveScene?.Nodes.Add(this);
         Tiles = new List<Tile>();
-        //_tiles = new Dictionary<int, Dictionary<int, Dictionary<int, Vector2>>>();
         _atlas = atlas;
         Raylib.SetTextureFilter(_atlas,TextureFilter.Point);
         for (int layer = layers.Count - 1; layer >= 0; layer--)
@@ -47,7 +44,6 @@ public class TileMap : Node2D
                 }
             }
         }
-        //Color* pixels = (Color*)Raylib.MemAlloc(100*100*sizeof(Color));
     }
 
     protected void SortTiles()
@@ -57,12 +53,9 @@ public class TileMap : Node2D
 
     public void SetTile(int layer,Vector2 position, Vector2 offset)
     {
-
-        //Tiles.Find(t => t.layer == layer && t.position.X == position.X && t.position.Y == position.Y).atlas = offset;
         if (!Tiles.Contains(new Tile(layer, new Vector3(position.X, position.Y,0), offset)))
         {
             Tiles.Add(new Tile(layer, new Vector3(position.X, position.Y,0), offset));
-            //Tiles[layer] = new Dictionary<int, Dictionary<int, Vector2>>();
         }
         else
         {
@@ -104,9 +97,8 @@ public class TileMap : Node2D
 
     public void HandleTile(Tile tile)
     {
-        float finalSize = this.Scale.X * this.Size.X * (TileSize + 0.5f); // TileSize already represents the desired size
+        float finalSize = this.Scale.X * this.Size.X * (TileSize + 0.5f);
 
-        // Draw the tile
         DrawTile(tile.Position, finalSize,_atlas, tile.Atlas * TileSize, this.Rotation, new Vector2(0, 0));
         
         Vector3 transformedPosition = tile.Position * new Vector3(finalSize, finalSize, 0) - new Vector3(finalSize/2, finalSize/2, 0);
