@@ -12,8 +12,12 @@ using Raylib_cs;
 
 namespace Quantumify.Scenes;
 
-public class Scene
+public class Scene : IUpdate
 {
+    public int ZIndex { get; set; }
+
+
+    
     public List<Node> Nodes = new List<Node>();
     public List<IDisposable> ToDispose = new List<IDisposable>();
     public readonly ISimulation Simulation;
@@ -35,15 +39,12 @@ public class Scene
         Simulation = new Simulation2D(physic2DSettings ?? new());
     }
 
+
+
     public void Update()
     {
         ToDispose.ForEach(obj =>
         {
-            if (obj is Node node)
-            {
-                Nodes.Remove(node);
-            }
-            
             obj.Dispose();
         });
         ToDispose.Clear();
@@ -55,7 +56,7 @@ public class Scene
         Simulation.Step(1.0f / 60.0f);
         Nodes.ForEach(node => node.FixedUpdate());
     }
-
+    
     public void AfterUpdate()
     {
         Nodes.ForEach(node => node.AfterUpdate());
@@ -89,6 +90,11 @@ public class Scene
         return Nodes.FindAll(node => node.HasTag(tag));
     }
     //Raylib.DrawCube(new Vector3(0, 0, 0), 1, 1, 1, Color.Red);
+
+    public void Overlay()
+    {
+        Nodes.ForEach(node => node.Overlay());
+    }
 
     public void Dispose()
     {

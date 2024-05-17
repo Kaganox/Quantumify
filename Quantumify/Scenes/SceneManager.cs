@@ -39,4 +39,9 @@ public static class SceneManager
     {
         ActiveScene?.Draw();
     }
+    
+    internal static void Overlay()
+    {
+        ActiveScene?.Overlay();
+    }
 }

@@ -1,5 +1,4 @@
-﻿using System.Net.Mime;
-using System.Numerics;
+﻿using System.Numerics;
 using Quantumify.Scenes;
 using Raylib_cs;
 using Color = Raylib_cs.Color;
@@ -8,23 +7,25 @@ namespace Quantumify.Nodes.Nodes2D;
 
 public class TileMap : Node2D
 {
-
-
     public int TileSize;
-    Texture2D _atlas;
     
-    public Vector3 Size = new(10,10,0);
-    
+    public Vector3 Size;
+    public List<Tile> Tiles;
     public delegate void Clicked(Tile tile,MouseButton button);
-    public event Clicked OnClicked;
+
+    public event Clicked? OnClicked;
     
-    public List<Tile> Tiles = new();
-    public unsafe TileMap(List<Image> layers, Texture2D atlas,Dictionary<int,Vector2> atlasMap) : base(null,new Color(0,0,0,0))
+    Texture2D _atlas;
+    public TileMap(List<Image> layers, Texture2D atlas,Dictionary<int,Vector2> atlasMap) : base(null,new Color(0,0,0,0))
     {
-        SceneManager.ActiveScene?.Nodes.Add(this);
         Tiles = new List<Tile>();
+        Size = new(10, 10, 0);
         _atlas = atlas;
-        Raylib.SetTextureFilter(_atlas,TextureFilter.Point);
+
+        this.Rotation = 35;
+        
+        SceneManager.ActiveScene?.Nodes.Add(this);
+        
         for (int layer = layers.Count - 1; layer >= 0; layer--)
         {
             Image image = layers[layer];
@@ -56,12 +57,14 @@ public class TileMap : Node2D
         if (!Tiles.Contains(new Tile(layer, new Vector3(position.X, position.Y,0), offset)))
         {
             Tiles.Add(new Tile(layer, new Vector3(position.X, position.Y,0), offset));
+            Logger.Error("CREATED NEW");
         }
         else
         {
+            Logger.Error("UPDATED");
             GetTile(layer,position).Atlas = offset;
         }
-        Logger.Error("ADDED "+position.X+", "+position.Y);
+        //Logger.Error("ADDED "+position.X+", "+position.Y);
         SortTiles();
     }
     
@@ -99,12 +102,12 @@ public class TileMap : Node2D
     {
         float finalSize = this.Scale.X * this.Size.X * (TileSize + 0.5f);
 
-        DrawTile(tile.Position, finalSize,_atlas, tile.Atlas * TileSize, this.Rotation, new Vector2(0, 0));
+        DrawTile(tile.Position, finalSize,_atlas, tile.Atlas * TileSize, 0, new Vector2(0, 0));
         
         Vector3 transformedPosition = tile.Position * new Vector3(finalSize, finalSize, 0) - new Vector3(finalSize/2, finalSize/2, 0);
         Vector2 screen = Raylib.GetWorldToScreen2D(new Vector2(transformedPosition.X, transformedPosition.Y), SceneCamera.Camera.GetCamera2D());
         Rectangle screenRect = new Rectangle(screen.X, screen.Y, finalSize, finalSize);
-
+        
         if (Raylib.CheckCollisionCircleRec(Raylib.GetMousePosition(), 0.001f, screenRect))
         {
             foreach (MouseButton button in Enum.GetValues(typeof(MouseButton)))
@@ -139,14 +142,13 @@ public class TileMap : Node2D
 
         Raylib.DrawTexturePro(texture, source, dest, adjustedOrigin, rotation, Color.White);
     }
-
     
     public Vector3 ToTilePosition(Vector3 position)
     {
         return position - this.Position / TileSize;
     }
 
-// Function to rotate a point around a center
+    // Function to rotate a point around a center
     public Vector2 RotatePoint(Vector2 point, Vector2 center, float angle) {
         float rad = MathF.PI * angle / 180.0f;
         float cos = MathF.Cos(rad);
@@ -156,6 +158,5 @@ public class TileMap : Node2D
         float newY = translatedPoint.X * sin + translatedPoint.Y * cos + center.Y;
         return new Vector2(newX, newY);
     }
-
 }
 

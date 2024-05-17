@@ -155,6 +155,6 @@ public abstract class Node : IUpdate,IDisposable
 
     public virtual void Dispose()
     {
-        
+        SceneManager.ActiveScene.Nodes.Remove(this);
     }
 }

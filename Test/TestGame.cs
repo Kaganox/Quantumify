@@ -2,6 +2,8 @@
 using Jitter2.Collision.Shapes;
 using Quantumify;
 using Quantumify.Config;
+using Quantumify.Gui;
+using Quantumify.Nodes;
 using Quantumify.Nodes.Nodes2D;
 using Quantumify.Nodes.Nodes3D;
 using Quantumify.Physics.Aether;
@@ -44,6 +46,17 @@ public partial class TestGame : Game
             
         };
 
+        Button button = new Button()
+        {
+            Text = "Test",
+            Position = new Vector2(50,50),
+            Size = new Vector2(100, 100),
+            Normal = Color.Red,
+            Hover = Color.Blue,
+            Pressed = Color.Green
+        };
+
+        
         var atlas = new Dictionary<int, Vector2>()
         {
             [Raylib.ColorToInt(Color.Black)] = new Vector2(0, 0),
@@ -53,13 +66,35 @@ public partial class TestGame : Game
         TileMap tileMap = new(new List<Image>(){contentManager.Load<Image>("atlas.png")},
             contentManager.Load<Texture2D>("tilemap.png"),atlas)
         {
-            TileSize = 4
+            TileSize = 4,
+            Size = new Vector3(30, 30,1),
+        };
+
+        Tile tile = tileMap.GetTile(0, new Vector2(0, 0));
+        tile.SetData("test", 0);
+        int data = tile.GetData<int>("test");
+
+        tileMap.OnClicked += (tile, button) =>
+        {
+            if (button == MouseButton.Left)
+            {
+                tileMap.SetTile(tile.Layer, new Vector2(tile.Position.X, tile.Position.Y), new Vector2(1, 0));
+            }
+
+            if (button == MouseButton.Right)
+            {
+                tileMap.SetTile(tile.Layer, new Vector2(tile.Position.X, tile.Position.Y), new Vector2(0, 0));
+            }
         };
         
         Player player = new()
         {
             //Texture = test,
         };
+        
+        button.OnClicked += () => { player.Coins++; };
+
+        
         Cam3D cam3D = new()
         {
             Position = new Vector3(10, 10, 10),
