@@ -30,6 +30,7 @@ public class Game : IDisposable
         Logger.SetupRaylibLogger();
         Logger.Info("Hello World!");
 
+
         SceneCamera.Init();
         Raylib.InitWindow(800, 480, "Hello World"); //TODO: create Window class with Title, Width, Height
         

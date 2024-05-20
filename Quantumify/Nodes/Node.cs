@@ -28,6 +28,8 @@ public abstract class Node : IUpdate,IDisposable
 
     private Node? parent;
 
+    public float DeltaTime => Raylib.GetFrameTime();
+    
     /// <summary>
     /// Creates a node
     /// </summary>

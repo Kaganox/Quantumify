@@ -8,6 +8,7 @@ using Quantumify.Nodes.Nodes2D;
 using Quantumify.Nodes.Nodes3D;
 using Quantumify.Physics.Aether;
 using Quantumify.Scenes;
+using Quantumify.Windowing;
 using Raylib_cs;
 
 namespace Test;
@@ -36,6 +37,10 @@ public partial class TestGame : Game
     {
 
         base.Init();
+        
+        
+        Window.SetTitle("Test");
+        Window.SetIcon(contentManager.Load<Image>("Unbenannt.png"));
         //Texture2D texture = contentManager.Load<Texture2D>("content/player.png");
         //Console.WriteLine(Environment.CurrentDirectory + "/content/save.dat");
         //SaveFile = new(Environment.CurrentDirectory + "/content/save.dat");
@@ -46,7 +51,12 @@ public partial class TestGame : Game
             
         };
 
-        Button button = new Button()
+        Button button = new Button(new LabelSettings()
+        {
+            Color = Color.Green,
+            FontSize = 20,
+            Spacing = 1
+        })
         {
             Text = "Test",
             Position = new Vector2(50,50),
@@ -55,7 +65,23 @@ public partial class TestGame : Game
             Hover = Color.Blue,
             Pressed = Color.Green
         };
-
+        
+        Label label = new Label()
+        {
+            Text = "Tethrgest",
+            Position = new Vector2(250,50),
+            Size = new Vector2(100, 100),
+        };
+        
+        CircleDiagram circle = new CircleDiagram()
+        {
+            
+        };
+        circle.SetData("test", Color.Red, 0.5);
+        circle.SetData("test1", Color.Green, 0.1);
+        circle.SetData("test2", Color.Blue, 0.15);
+        circle.SetData("test3", Color.Yellow, 0.15);
+        circle.SetData("test4", Color.Brown, 0.1);
         
         var atlas = new Dictionary<int, Vector2>()
         {

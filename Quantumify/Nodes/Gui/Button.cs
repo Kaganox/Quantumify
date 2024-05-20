@@ -1,5 +1,6 @@
 using System.Numerics;
 using LibNoise.Renderer;
+using Quantumify.Windowing;
 using Raylib_cs;
 using Color = Raylib_cs.Color;
 
@@ -8,20 +9,22 @@ namespace Quantumify.Gui;
 public class Button : GuiElement
 {
     
-    public delegate void Clicked();
-    public event Clicked OnClicked;
+
 
     public String Text;
 
     public Color Normal;
     public Color Hover;
     public Color Pressed;
-
-    private bool Press;
-
     public LabelSettings Settings;
 
-    public Button(LabelSettings settings = default)
+    public delegate void Clicked();
+    public event Clicked OnClicked;
+    
+    private bool _press;
+
+
+    public Button(LabelSettings? settings = default)
     {
         Settings = settings;
         if (settings == null)
@@ -49,28 +52,20 @@ public class Button : GuiElement
                 color = Pressed;
             }
             
-            if(Raylib.IsMouseButtonReleased(MouseButton.Left)&&!Press){
-                Press = true;
+            if(Raylib.IsMouseButtonReleased(MouseButton.Left)&&!_press){
+                _press = true;
                 OnClicked?.Invoke();
             }
             else
             {
-                Press = false;
+                _press = false;
             }
             
         }
 
         Raylib.DrawRectangleRec(rect,color);
 
-        Raylib.DrawRectangleLinesEx(rect,5,LerpColor(color,Color.Black,0.25f));
-        Raylib.DrawTextEx(Raylib.GetFontDefault(),Text,rect.Position+new Vector2(5,5),Settings.FontSize,Settings.Spacing,Color.Black);
-    }
-    
-    public Color LerpColor(Color color, Color color2, float floatc){
-        int R = (int)Raymath.Lerp((float)color.R, (float)color2.R, floatc);
-        int G = (int)Raymath.Lerp((float)color.G, (float)color2.G, floatc);
-        int B = (int)Raymath.Lerp((float)color.B, (float)color2.B, floatc);
-        int A = (int)Raymath.Lerp((float)color.A, (float)color2.A, floatc);
-        return new Color(R, G,B,A);
+        Raylib.DrawRectangleLinesEx(rect,5,Engine.LerpColor(color,Color.Black,0.25f));
+        Raylib.DrawTextEx(Raylib.GetFontDefault(),Text,rect.Position+new Vector2(5,5),Settings.FontSize,Settings.Spacing,Settings.Color);
     }
 }
