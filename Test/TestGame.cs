@@ -70,8 +70,22 @@ public partial class TestGame : Game
         {
             Text = "Tethrgest",
             Position = new Vector2(250,50),
-            Size = new Vector2(100, 100),
+            Size = new Vector2(5, 100),
         };
+
+        RichTextLabel richTextLabel = new RichTextLabel()
+        {
+            Position = new Vector2(150,250),
+            Size =  new Vector2(50, 100),
+        };
+        richTextLabel
+            .AppendText("Helwesrrrrrrrrlo\nWorld! This is a ")
+            .SetColor(Color.Blue)
+            .AppendText("TEST ")
+            .SetColor(Color.Black)
+            .AppendText("if it works!! wadasd asd asd as das das dasd a ");
+
+        
         
         CircleDiagram circle = new CircleDiagram()
         {
