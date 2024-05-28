@@ -135,9 +135,14 @@ public abstract class Node : IUpdate,IDisposable
 
     public void Destroy()
     {
+        OnDestroy();
         Scene? current = SceneManager.ActiveScene;
         //current?.Nodes.Remove(this);
         current?.ToDispose.Add(this);
+    }
+    
+    public virtual void OnDestroy()
+    {
     }
 
     /// <summary>

@@ -1,5 +1,4 @@
 ﻿using System.Numerics;
-using Jitter2.Collision.Shapes;
 using Quantumify;
 using Quantumify.Config;
 using Quantumify.Gui;
@@ -51,7 +50,12 @@ public partial class TestGame : Game
             
         };
 
-        Button button = new Button(new LabelSettings()
+        new Calendar()
+        {
+            Position = new Vector2(150,50),
+        };
+        
+        /*Button button = new Button(new LabelSettings()
         {
             Color = Color.Green,
             FontSize = 20,
@@ -96,7 +100,7 @@ public partial class TestGame : Game
         circle.SetData("test2", Color.Blue, 0.15);
         circle.SetData("test3", Color.Yellow, 0.15);
         circle.SetData("test4", Color.Brown, 0.1);
-        
+        */
         var atlas = new Dictionary<int, Vector2>()
         {
             [Raylib.ColorToInt(Color.Black)] = new Vector2(0, 0),
@@ -132,8 +136,17 @@ public partial class TestGame : Game
             //Texture = test,
         };
         
-        button.OnClicked += () => { player.Coins++; };
+        //button.OnClicked += () => { player.Coins++; };
 
+        new CheckBox()
+        {
+            Position = new Vector2(50, 100),
+        };
+        
+        new Slider()
+        {
+            Position = new Vector2(50, 50),
+        };
         
         Cam3D cam3D = new()
         {

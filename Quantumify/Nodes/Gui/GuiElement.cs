@@ -8,8 +8,15 @@ public class GuiElement : Node
 {
     
     public int ZIndex { get; set; }
+    public bool Visible;
     public Vector2 Position;
     public Vector2 Size;
+    
+    
+    public GuiElement() : base()
+    {
+        Visible = true;
+    }
     
     internal Rectangle GetRectangle()
     {

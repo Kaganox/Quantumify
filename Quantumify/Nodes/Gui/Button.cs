@@ -23,6 +23,8 @@ public class Button : GuiElement
     
     private bool _press;
 
+    public float TextSize;
+
 
     public Button(LabelSettings? settings = default)
     {
@@ -35,6 +37,10 @@ public class Button : GuiElement
                 Spacing = 1
             };
         }
+        
+        Normal = Color.Gray;
+        Hover = Color.LightGray;
+        Pressed = Color.DarkGray;
     }
     
     public override void Overlay()
@@ -43,6 +49,7 @@ public class Button : GuiElement
         
         Vector2 textSize = Raylib.MeasureTextEx(Raylib.GetFontDefault(), Text, Settings.FontSize, Settings.Spacing) * new Vector2(1,1.35f) + new Vector2(8,0);
 
+        this.TextSize = textSize.X;
         Rectangle rect = new Rectangle(Position,textSize);
         Color color = Normal;
         if(Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(),rect)){
