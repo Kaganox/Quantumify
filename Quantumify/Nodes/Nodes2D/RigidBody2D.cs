@@ -16,13 +16,16 @@ public class RigidBody2D : Node2D
     public Body? Body;
     public BodyType BodyType;
     public bool Enter;
-    
+
+
+    public Vector2 Velocity;
     public Vector2A Pos => Body?.Position ?? new Vector2A(0,0);
     public RigidBody2D(Texture2D? texture = null, Color? color = default, BodyType bodyType = BodyType.Dynamic) : base(texture, color)
     {
         this.BodyType = bodyType;
         _hadSetuped = false;
         Collides = new List<Node>();
+        Velocity = new Vector2(0,0);
     }
 
     
@@ -36,7 +39,7 @@ public class RigidBody2D : Node2D
             Ready();
             _hadSetuped = true;
         }
-        
+        Body.LinearVelocity = new Vector2A(Velocity.X,Velocity.Y);
         Vector3 newPosition = BodyVector3() - GlobalPosition;
         if (newPosition == Vector3.Zero)
         {

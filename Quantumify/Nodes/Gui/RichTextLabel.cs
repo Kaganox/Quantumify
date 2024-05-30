@@ -77,121 +77,111 @@ public class RichTextLabel : GuiElement
     #endif
     }
 
-public (int, int) RenderText(string text, int x, int y, int fontSize, Color color)
-{
-    float maxX = Position.X + (Scale.X * Size.X);
-    float maxY = Position.Y + (Scale.Y * Size.Y);
-
-    if (y > maxY)
+    public (int, int) RenderText(string text, int x, int y, int fontSize, Color color)
     {
-        return (x, int.MaxValue); // Signal to stop rendering
-    }
+        float maxX = Position.X + (Scale.X * Size.X);
+        float maxY = Position.Y + (Scale.Y * Size.Y);
 
-    string[] words = text.Split(' ');
-    string line = "";
-    int offsetX = x;
-
-    foreach (string word in words)
-    {
-        // Measure the width of the current line plus the new word
-        int lineWidth = Raylib.MeasureText(line + word, fontSize);
-        // If the line width exceeds maxX, render the current line and start a new one
-        if (offsetX + lineWidth > maxX)
+        // Initial boundary check
+        if (y > maxY)
         {
-            if (line.Length > 0)
-            {
-                // Render the current line if it is not empty
-                Raylib.DrawText(line, offsetX, y, fontSize, color);
-                line = ""; // Reset the line
-                offsetX = (int)Position.X; // Reset offsetX to the initial position
-                y += fontSize; // Move down to the next line
+            return (x, int.MaxValue); // Signal to stop rendering
+        }
 
-                // If the new y position exceeds maxY, signal to stop rendering
-                if (y > maxY)
-                {
-                    return (offsetX, int.MaxValue);
-                }
-            }
+        string[] words = text.Split(' ');
+        string line = "";
+        int offsetX = x;
+        bool newLine = false; // To track if a new line was added
 
-            // Check if the word itself exceeds the maxX width
-            if (Raylib.MeasureText(word, fontSize) > (maxX - Position.X))
+        foreach (string word in words)
+        {
+            // Measure the width of the current line plus the new word
+            int lineWidth = Raylib.MeasureText(line + word, fontSize);
+            
+            // If the line width exceeds maxX, render the current line and start a new one
+            if (offsetX + lineWidth > maxX)
             {
-                int startIndex = 0;
-                while (startIndex < word.Length)
+                if (line.Length > 0)
                 {
-                    int i;
-                    for (i = startIndex + 1; i <= word.Length; i++)
+                    // Render the current line if it is not empty
+                    Raylib.DrawText(line.TrimEnd(), offsetX, y, fontSize, color); // Trim trailing spaces
+                    line = ""; // Reset the line
+                    offsetX = (int)Position.X; // Reset offsetX to the initial position
+                    y += fontSize; // Move down to the next line
+                    newLine = true;
+
+                    // If the new y position exceeds maxY, signal to stop rendering
+                    if (y + fontSize > maxY) // Adjusted check to prevent rendering the last line below the box
                     {
-                        string subWord = word.Substring(startIndex, i - startIndex);
-                        if (Raylib.MeasureText(subWord, fontSize) > (maxX - offsetX))
+                        return (offsetX, int.MaxValue);
+                    }
+                }
+
+                // Check if the word itself exceeds the maxX width
+                if (Raylib.MeasureText(word, fontSize) > (maxX - Position.X))
+                {
+                    int startIndex = 0;
+                    while (startIndex < word.Length)
+                    {
+                        int i;
+                        for (i = startIndex + 1; i <= word.Length; i++)
                         {
-                            // Render the part of the word that fits
-                            Raylib.DrawText(word.Substring(startIndex, i - startIndex - 1), offsetX, y, fontSize, color);
-                            // Start a new line with the remaining part of the word
-                            offsetX = (int)Position.X;
-                            y += fontSize;
-
-                            // If the new y position exceeds maxY, signal to stop rendering
-                            if (y > maxY)
+                            string subWord = word.Substring(startIndex, i - startIndex);
+                            if (Raylib.MeasureText(subWord, fontSize) > (maxX - offsetX))
                             {
-                                return (offsetX, int.MaxValue);
-                            }
+                                // Render the part of the word that fits
+                                Raylib.DrawText(word.Substring(startIndex, i - startIndex - 1), offsetX, y, fontSize, color);
+                                // Start a new line with the remaining part of the word
+                                offsetX = (int)Position.X;
+                                y += fontSize;
 
-                            startIndex = i - 1; // Update startIndex for the next part of the word
+                                // If the new y position exceeds maxY, signal to stop rendering
+                                if (y + fontSize > maxY)
+                                {
+                                    return (offsetX, int.MaxValue);
+                                }
+
+                                startIndex = i - 1; // Update startIndex for the next part of the word
+                                break;
+                            }
+                        }
+
+                        // If the whole remaining part of the word fits, render it and break the loop
+                        if (i > word.Length)
+                        {
+                            Raylib.DrawText(word.Substring(startIndex), offsetX, y, fontSize, color);
+                            offsetX += Raylib.MeasureText(word.Substring(startIndex), fontSize);
                             break;
                         }
                     }
-
-                    // If the whole remaining part of the word fits, render it and break the loop
-                    if (i > word.Length)
-                    {
-                        
-                        Raylib.DrawText(word.Substring(startIndex), offsetX, y, fontSize, color);
-                        offsetX += Raylib.MeasureText(word.Substring(startIndex), fontSize);
-                        
-                        
-                        if (y > maxY)
-                        {
-                            return (offsetX, int.MaxValue);
-                        }
-                        break;
-                    }
+                }
+                else
+                {
+                    // Start the new line with the current word
+                    line = word + " ";
                 }
             }
             else
             {
-                // Start the new line with the current word
-                line = word + " ";
+                line += word + " ";
             }
         }
-        else
+
+        // Render the last line if any
+        if (line.Length > 0)
         {
-            line += word + " ";
+            if (!newLine && y + fontSize > maxY)
+            {
+                return (offsetX, int.MaxValue);
+            }
+
+            Raylib.DrawText(line.TrimEnd(), offsetX, y, fontSize, color);
+            offsetX += Raylib.MeasureText(line.TrimEnd(), fontSize);
         }
+
+        // Return the next position for further rendering
+        return (offsetX, y);
     }
-
-    // Render the last line
-    if (line.Length > 0)
-    {
-        Raylib.DrawText(line, offsetX, y, fontSize, color);
-        offsetX += Raylib.MeasureText(line, fontSize);
-        
-        
-        if (y > maxY)
-        {
-            return (offsetX, int.MaxValue);
-        }
-    }
-
-    // Return the next position for further rendering
-    return (offsetX, y);
-}
-
-
-
-
-
-    
 
     public RichTextLabel AppendText(string text)
     {

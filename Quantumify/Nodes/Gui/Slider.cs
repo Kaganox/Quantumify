@@ -8,14 +8,14 @@ public class Slider : GuiElement
     private float pos;
     bool moved = false;
     
-    int value;
-    int maxValue;
-    int minValue;
+    public int Value;
+    public int MaxValue;
+    public int MinValue;
 
     public Slider() : base()
     {
-        minValue = 50;
-        maxValue = 100;
+        MinValue = 50;
+        MaxValue = 100;
         Size = new Vector2(100, 0);
     }
     
@@ -55,9 +55,9 @@ public class Slider : GuiElement
             }
         }
         
-        value = (int)((pos/size)*(maxValue-minValue))+minValue;
+        Value = (int)((pos/size)*(MaxValue-MinValue))+MinValue;
 
-        Logger.Warn($"Value: {value}");
+        //Logger.Warn($"Value: {Value}");
         
         Raylib.DrawCircle((int)(pos + Position.X),(int)(Position.Y),10,Color.Red);
     }
