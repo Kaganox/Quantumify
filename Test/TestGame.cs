@@ -89,9 +89,9 @@ public partial class TestGame : Game
             .SetColor(Color.Black)
             .AppendText("if it works!! wadasd asd asd as das das dasd a ");
 
-        /*
         
-        CircleDiagram circle = new CircleDiagram()
+        
+        /*CircleDiagram circle = new CircleDiagram()
         {
             
         };
@@ -106,6 +106,16 @@ public partial class TestGame : Game
             [Raylib.ColorToInt(Color.Black)] = new Vector2(0, 0),
             [Raylib.ColorToInt(Color.White)] = new Vector2(1, 0)
         };
+        
+        
+        new ImageRect()
+        {
+            Position = new Vector2(0, 0),
+            Size = new Vector2(1, 1),
+            Texture = contentManager.Load<Texture2D>("test.png"),
+            HoverAble = true
+        }.OnClick += () => { Logger.Warn("Clicked"); };
+        
         
         TileMap tileMap = new(new List<Image>(){contentManager.Load<Image>("atlas.png")},
             contentManager.Load<Texture2D>("tilemap.png"),atlas)

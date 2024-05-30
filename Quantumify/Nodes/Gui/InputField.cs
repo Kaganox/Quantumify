@@ -1,7 +1,7 @@
 using System.Numerics;
 using Raylib_cs;
 using System.Text;
-
+using Quantumify.Windowing;
 using Timer = Quantumify.Nodes.Timer;
 
 namespace Quantumify.Gui;
@@ -21,11 +21,9 @@ public class InputField : GuiElement
     private Timer _timer;
     
     private bool _selection;
+
+    public bool EditMode;
     
-    public string GetSelectedText()
-    {
-        return Text.ToString().Substring(_startSelection, _endSelection - _startSelection);
-    }
     
     LabelSettings labelSettings;
     public InputField(float x, float y, float width, float height,int maxInputLength = 20, LabelSettings labelSettings = null)
@@ -118,7 +116,10 @@ public class InputField : GuiElement
                 { 
                     if (_startSelection > -1 && _endSelection > -1)
                     {
-                        string selectedText = Text.ToString().Substring(_startSelection, _endSelection - _startSelection);
+                        int max = Math.Max(_startSelection, _endSelection);
+                        int min = Math.Min(_startSelection, _endSelection);
+                        
+                        string selectedText = Text.ToString().Substring(min, max - min);
                         Raylib.SetClipboardText(selectedText);
                     }
                 }
@@ -145,7 +146,11 @@ public class InputField : GuiElement
                 this._cursor++;
                 return;
             }
-            
+
+            if (Raylib.IsKeyDown(KeyboardKey.Z))
+            {
+                Logger.Warn("x");
+            }
             
             if(k == KeyboardKey.LeftShift||k == KeyboardKey.RightShift)
             {
@@ -230,6 +235,14 @@ public class InputField : GuiElement
         }
     }
     
+    
+    public string GetSelectedText()
+    {
+        int max = Math.Max(_startSelection, _endSelection);
+        int min = Math.Min(_startSelection, _endSelection);
+        return Text.ToString().Substring(min, max - min);
+    }
+    
     public void DrawSelection()
     {
         int higherSelection = Math.Max(_startSelection, _endSelection);
@@ -242,7 +255,7 @@ public class InputField : GuiElement
         Vector2 second = position;
         
         
-        Rand.SetSeed(0);
+        //Rand.SetSeed(0);
         foreach (Char character in Text.ToString())
         {
             Vector2 textSize = Raylib.MeasureTextEx(Raylib.GetFontDefault(), character.ToString(), labelSettings.FontSize,labelSettings.Spacing);
