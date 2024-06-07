@@ -92,7 +92,7 @@ public class Rand
     public static T GetRandom<T>(T[] array) => GetRandom(array.ToList());
     
     
-    public void Shuffle<T>(ref List<T> list)
+    public static void Shuffle<T>(List<T> list)
     {
         int n = list.Count;
         while (n > 1)

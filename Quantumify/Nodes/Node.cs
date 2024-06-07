@@ -21,7 +21,7 @@ public abstract class Node : IUpdate,IDisposable
 
     public string uuid;
     public string parentUUID;
-
+    
     private bool _isReady;
     
     private List<Node> children = new List<Node>();
@@ -138,6 +138,7 @@ public abstract class Node : IUpdate,IDisposable
         OnDestroy();
         Scene? current = SceneManager.ActiveScene;
         //current?.Nodes.Remove(this);
+        this.children.ForEach(child => child.Destroy());
         current?.ToDispose.Add(this);
     }
     

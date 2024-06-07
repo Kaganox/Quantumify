@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Quantumify.Gui;
 using Quantumify.Nodes;
 using Quantumify.Physics;
 using Quantumify.Physics.Aether;
@@ -82,7 +83,7 @@ public class Scene : IUpdate
                 break;
         }
         
-        drawPritority.ForEach(node => node.Overlay());
+        //drawPritority.ForEach(node => node.Overlay());
     }
 
     public List<Node> GetNodesByTag(string tag)
@@ -93,7 +94,16 @@ public class Scene : IUpdate
 
     public void Overlay()
     {
-        Nodes.ForEach(node => node.Overlay());
+        
+        List<Node> drawPritority = new List<Node>(Nodes);
+        drawPritority.Sort((a, b) => a.ZIndex.CompareTo(b.ZIndex));
+        drawPritority.ForEach(node =>
+        {
+            if (node is GuiElement { Visible: true })
+            {
+                node.Overlay();
+            }
+        });
     }
 
     public void Dispose()

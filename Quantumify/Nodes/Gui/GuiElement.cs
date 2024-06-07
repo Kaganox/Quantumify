@@ -11,6 +11,8 @@ public class GuiElement : Node
     public bool Visible;
     public Vector2 Position;
     public Vector2 Size;
+
+    public Func<bool>? TurnVisible;
     
     
     public GuiElement() : base()
@@ -26,5 +28,12 @@ public class GuiElement : Node
     public override void Overlay()
     {
         base.Overlay();
+    }
+
+    public override void Update()
+    {
+        base.Update();
+        
+        Visible = TurnVisible?.Invoke() ?? Visible;
     }
 }

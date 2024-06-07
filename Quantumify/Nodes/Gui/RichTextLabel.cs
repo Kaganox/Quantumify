@@ -12,6 +12,7 @@ public class RichTextLabel : GuiElement
 
     private Color _color;
     private int _fontSize;
+    public bool HasBox;
     
     public RichTextLabel()
     {
@@ -20,6 +21,7 @@ public class RichTextLabel : GuiElement
         _color = Color.Black;
         _fontSize = 14;
         segments = new List<RichTextSegment>();
+        
     }
 
       public override void Overlay()
@@ -30,6 +32,15 @@ public class RichTextLabel : GuiElement
         float y = Position.Y;
         bool stop = false;
 
+        
+        Rectangle rect = GetRectangle();
+        if (HasBox)
+        {
+            int scale = 5;
+            Raylib.DrawRectangleRec(rect, Color.DarkGray);
+            Raylib.DrawRectangleLinesEx(new Rectangle(rect.Position-new Vector2(scale,scale),rect.Size+new Vector2(scale*2,scale*2)), scale, Color.Gray);
+        }
+        
         foreach (var segment in segments)
         {
             string[] lines = segment.Text.Split("\n");
@@ -71,10 +82,11 @@ public class RichTextLabel : GuiElement
                 break;
         }
 
-    #if DEBUG
-        Rectangle rect = GetRectangle();
+        
+        
+    /*#if DEBUG
         Raylib.DrawRectangleLines((int)rect.X, (int)rect.Y, (int)rect.Width, (int)rect.Height, Color.Red);
-    #endif
+    #endif*/
     }
 
     public (int, int) RenderText(string text, int x, int y, int fontSize, Color color)
@@ -193,6 +205,11 @@ public class RichTextLabel : GuiElement
     {
         _color = color;
         return this;
+    }
+    
+    public void Clear()
+    {
+        segments.Clear();
     }
     
     public RichTextLabel SetFontSize(int fontSize)

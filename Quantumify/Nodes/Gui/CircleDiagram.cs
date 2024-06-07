@@ -12,6 +12,7 @@ public class CircleDiagram : GuiElement
     
     public delegate void Hover(String name, Color color, double value);
     public event Hover OnHover;
+    public bool IsHover { get; private set; }
     public CircleDiagram(Dictionary<string, (Color, double)> datas = default)
     {
         this.datas = datas;
@@ -55,6 +56,8 @@ public class CircleDiagram : GuiElement
     
     public override void Overlay()
     {
+        
+        IsHover = false;
         Position = new Vector2(500, 100);
         base.Overlay();
         
@@ -66,7 +69,6 @@ public class CircleDiagram : GuiElement
     public void DrawCircle(bool outline = false)
     {
         double lastAngle = 0;
-        
         
         foreach (Segment value in values)
         {
@@ -81,7 +83,8 @@ public class CircleDiagram : GuiElement
                         Raylib.GetMousePosition()))
                 {
                     color = Engine.LerpColor(color, Color.Black, 0.25f);
-                    OnHover?.Invoke("name", color, value.Value);
+                    IsHover = true;
+                    OnHover?.Invoke(value.Name, color, value.Value);
                 }
                 Raylib.DrawCircleSector(Position,100,(int)lastAngle,(int)(lastAngle+value.Value * 360),18,color);
             }

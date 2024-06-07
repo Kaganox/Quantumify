@@ -46,9 +46,8 @@ public static class Logger
 #endif
     }
     public static void Info(string message, int skipFrames = 2)=> Log(message, "INFO", ConsoleColor.DarkBlue, skipFrames);
-    public static void Warn(string message, int skipFrames = 2)=>Log(message, "INFO", ConsoleColor.Yellow, skipFrames);
+    public static void Warn(string message, int skipFrames = 2)=>Log(message, "WARN", ConsoleColor.Yellow, skipFrames);
     public static void Error(string message, int skipFrames = 2) => Log(message,"ERROR",ConsoleColor.Red,skipFrames);
-    
     public static void Fatal(string message, int skipFrames = 2)=>  Log(message, "FATAL", ConsoleColor.Cyan, skipFrames);
     
     /// <summary>
