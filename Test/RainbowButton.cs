@@ -10,6 +10,9 @@ public class RainbowButton : Button
 {
     private Tween _tween;
 
+
+    private float x;
+
     public RainbowButton(LabelSettings ? settings = default) : base(settings)
     {
         _tween = new Tween();
@@ -35,10 +38,7 @@ public class RainbowButton : Button
             if (i == 0)
             {
                 lastColor = colors.ElementAt(colors.Count-1);
-            }//else if (i == colors.Count - 1)
-            //{
-              //  lastColor = colors.ElementAt(colors.Count-1);
-            //}
+            }
             else
             {
                 lastColor = colors.ElementAt(i-1);
@@ -49,6 +49,8 @@ public class RainbowButton : Button
         }
         _tween.Running = true;
         _tween.Loop = true;
+
+        _tween.SetProperty(ref x, 5, 0, 1, 10);
     }
 
 
@@ -56,7 +58,6 @@ public class RainbowButton : Button
     {
         double f = past;//Math.Floor(past * 100) / 100;
 
-        Logger.Warn((float)f+" past");
         if (past <= 0||past >= 1)
         {
             return;
@@ -73,5 +74,6 @@ public class RainbowButton : Button
         {
             _tween.Running = true;
         }
+        Logger.Debug(x+"");
     }
 }

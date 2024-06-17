@@ -10,6 +10,8 @@ public class Tween : Node
     public float Past;
     public bool Running;
     public bool Loop;
+
+    //public delegate void Property(float past,ref float value);
     
     public override void Update()
     {
@@ -34,7 +36,9 @@ public class Tween : Node
                 
                 if (Past >= property.Delay && Past <= property.Time + property.Delay)
                 {
-                    property.Action((Past - property.Delay) / (property.Time));
+                    float useless = 0;
+                    //property.Lerp.Invoke((Past - property.Delay) / (property.Time),ref useless); 
+                    property.Action?.Invoke((Past - property.Delay) / (property.Time));
                 }
             });
             
@@ -44,6 +48,7 @@ public class Tween : Node
     
     public Tween SetProperty(Action<float> lerp, float time, float delay = 0)
     {
+        Action<float, float> action = (past,value) => lerp.Invoke(past);
         TweenProperty property = new TweenProperty(time, delay,lerp);
         _tweenElements.Add(property);
         return this;
@@ -53,11 +58,30 @@ public class Tween : Node
         }*/
     }
     
+    public Tween SetProperty(ref float value, float time, float delay, float start, float end)
+    {
+        TweenProperty property = new TweenProperty(time, delay,null);
+        //property.Lerp += (float past, ref float f) => Lerp(past, ref value, start, end);
+        _tweenElements.Add(property);
+        return this;
+        /*    (past) =>
+        {
+            x = Raymath.Lerp(start, end, past);
+        }*/
+    }
     
-    public class TweenProperty(float time, float delay, Action<float> action)
+    private void Lerp(float past, ref float value,float start, float end)
+    {
+        value = Raymath.Lerp(start,end, past);
+    }
+    
+    
+    public class TweenProperty(float time, float delay, Action<float>? action = default)
     {
         public readonly float Delay = delay;
         public readonly float Time = time;
-        public Action<float> Action = action;
+        public Action<float>? Action = action;
+
+        //public Property Lerp;
     }
 }

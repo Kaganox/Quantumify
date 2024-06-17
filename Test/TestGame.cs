@@ -103,11 +103,11 @@ public partial class TestGame : Game
         {
             
         };
-        circle.SetData("test", Color.Red, 0.5);
-        circle.SetData("test1", Color.Green, 0.1);
-        circle.SetData("test2", Color.Blue, 0.15);
-        circle.SetData("test3", Color.Yellow, 0.15);
-        circle.SetData("test4", Color.Brown, 0.1);
+        circle.SetData("Cookies", Color.Green, 0.5);
+        circle.SetData("Milk", Color.DarkGreen, 0.1);
+        circle.SetData("Salami", Color.Blue, 0.1);
+        circle.SetData("Chocolate", Color.DarkBlue, 0.15);
+        circle.SetData("Cheese", Color.SkyBlue, 0.15);
         
         
         circle.OnHover += (name, color, value) =>
