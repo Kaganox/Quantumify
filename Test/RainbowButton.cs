@@ -9,9 +9,7 @@ namespace Test;
 public class RainbowButton : Button
 {
     private Tween _tween;
-
-
-    private float x;
+    
 
     public RainbowButton(LabelSettings ? settings = default) : base(settings)
     {
@@ -50,7 +48,7 @@ public class RainbowButton : Button
         _tween.Running = true;
         _tween.Loop = true;
 
-        _tween.SetProperty(ref x, 5, 0, 1, 10);
+        //_tween.SetProperty(ref x, 5, 0, 1, 10);
     }
 
 
@@ -74,6 +72,5 @@ public class RainbowButton : Button
         {
             _tween.Running = true;
         }
-        Logger.Debug(x+"");
     }
 }

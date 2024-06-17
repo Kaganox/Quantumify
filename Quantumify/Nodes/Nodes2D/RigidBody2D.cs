@@ -1,10 +1,14 @@
 ﻿using System.Numerics;
-using System.Threading.Tasks.Dataflow;
-using nkast.Aether.Physics2D.Dynamics;
+using Box2D.NetStandard.Collision.Shapes;
+using Box2D.NetStandard.Dynamics.Bodies;
+using Box2D.NetStandard.Dynamics.Fixtures;
+using Box2D.NetStandard.Dynamics.World;
+using Jitter2.Collision.Shapes;
 using Quantumify.Physics.Aether;
 using Quantumify.Scenes;
 using Raylib_cs;
-using Vector2A = nkast.Aether.Physics2D.Common.Vector2;
+using Color = Raylib_cs.Color;
+using Transform = Box2D.NetStandard.Common.Transform;
 
 namespace Quantumify.Nodes.Nodes2D;
 
@@ -16,16 +20,28 @@ public class RigidBody2D : Node2D
     public Body? Body;
     public BodyType BodyType;
     public bool Enter;
-
+    
+    
+    
+    private BodyDef BodyDef;
+    private FixtureDef FixtureDef;
 
     public Vector2 Velocity;
-    public Vector2A Pos => Body?.Position ?? new Vector2A(0,0);
-    public RigidBody2D(Texture2D? texture = null, Color? color = default, BodyType bodyType = BodyType.Dynamic) : base(texture, color)
+    public Vector2 Pos => Body?.Position ?? new Vector2(0,0);
+    public RigidBody2D(Texture2D? texture = null, Color? color = default, BodyType bodyType = BodyType.Dynamic,FixtureDef? fixtureDef = default) : base(texture, color)
     {
         this.BodyType = bodyType;
         _hadSetuped = false;
         Collides = new List<Node>();
         Velocity = new Vector2(0,0);
+        
+        
+        Vector3 finalSize = this.Scale * this.Size;
+        
+        FixtureDef = fixtureDef ?? new FixtureDef
+        {
+            shape = new PolygonShape(finalSize.X/2,finalSize.Y/2)
+        };
     }
 
     
@@ -39,11 +55,11 @@ public class RigidBody2D : Node2D
             Ready();
             _hadSetuped = true;
         }
-        Body.LinearVelocity = new Vector2A(Velocity.X,Velocity.Y);
+        Body.SetLinearVelocity(new Vector2(Velocity.X,Velocity.Y));
         Vector3 newPosition = BodyVector3() - GlobalPosition;
         if (newPosition == Vector3.Zero)
         {
-            Body.Awake = true;
+            Body.SetAwake(true);
         }
 
         Position += newPosition;
@@ -61,6 +77,49 @@ public class RigidBody2D : Node2D
         {
             this.OnClicked();
         }
+
+        
+        CheckCollide();
+        
+        
+    }
+
+    public void CheckCollide()
+    {
+        List<Node> conntact = new List<Node>();
+        for (Body body = this.World.GetBodyList(); body != null; body = body.GetNext()) {
+            foreach (Node node in SceneManager.ActiveScene!.Nodes)
+            {
+                if (node is RigidBody2D rigid)
+                {
+                    if (body == rigid.Body)
+                    {
+                        
+                        conntact.Add(node);
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < Collides.Count; i++)
+        {
+            
+            Node node = Collides[i];
+            if (!conntact.Contains(node))
+            {
+                this.CollisionExit(node);
+                conntact.Remove(node);
+                Collides.Remove(node);
+                i--;
+            }
+        }
+        
+        conntact.ForEach(c =>
+        {
+            this.CollisionEnter(c);
+            this.Collides.Add(c);
+        });
+        
     }
 
     public override void FixedUpdate()
@@ -76,15 +135,28 @@ public class RigidBody2D : Node2D
     /// This method creates a physics body for the Node2D and sets its properties.
     /// </summary>
     public void SetupPhysics() {
+        
+        
+        BodyDef = new BodyDef
+        {
+            position = new Vector2(GlobalPosition.X,GlobalPosition.Y),
+            angle = Rotation
+        };
+
+        
+        
         World world = ((Simulation2D) SceneManager.ActiveScene?.Simulation!).World;
-        Vector2A pos = new Vector2A(this.GlobalPosition.X, this.GlobalPosition.Y);
-        Vector2A size = new Vector2A(this.Size.X * this.Scale.X, this.Size.Y * this.Scale.Y);
-        this.Body = world.CreateBody(pos, this.Rotation, this.BodyType);
-        this.Body.CreateRectangle(this.Size.X*this.Scale.X, this.Size.Y*this.Scale.X, 0,new Vector2A(size.X,size.Y)/2);
+        Vector2 pos = new Vector2(this.GlobalPosition.X, this.GlobalPosition.Y);
+        Vector2 size = new Vector2(this.Size.X * this.Scale.X, this.Size.Y * this.Scale.Y);
+        this.Body = world.CreateBody(this.BodyDef); //pos, this.Rotation, this.BodyType);
+        this.Body.CreateFixture(this.FixtureDef);//this.Size.X*this.Scale.X, this.Size.Y*this.Scale.X, 0,new Vector2(size.X,size.Y)/2);
         //this.Body.CreateCircle(System.Drawing.Size.X/2,pos+size);
 
 
-        this.Body.OnCollision += (sender, other, contact) =>
+        Transform transform = this.Body.GetTransform();
+        this.Body.SetTransform(new Vector2(GlobalPosition.X,GlobalPosition.Y),Rotation);
+    
+        /*this.Body.OnCollision += (sender, other, contact) =>
         {
             RigidBody2D node = GetNodeFromFixture(other);
             if (!Collides.Contains(node))
@@ -105,7 +177,13 @@ public class RigidBody2D : Node2D
             }
             CollisionExit(node);
         };
-        this.Body.Mass = 1000;
+        this.Body.Mass = 1000;*/
+        this.Body.SetMassData(new MassData()
+        {
+            mass = 5,
+            center = new Vector2(0,0),
+            I = 0
+        });
     }
 
     public RigidBody2D GetNodeFromFixture(Fixture fixture)
@@ -151,6 +229,6 @@ public class RigidBody2D : Node2D
     public override void Dispose()
     {
         base.Dispose();
-        World.Remove(Body);
+        World.DestroyBody(Body);
     }
 }

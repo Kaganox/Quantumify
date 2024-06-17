@@ -65,4 +65,14 @@ public static class Engine
     {
         return new Color(Rand.RangeInt(0, 255), Rand.RangeInt(0, 255), Rand.RangeInt(0, 255), 255);
     }
+    
+    public static Vector3 Vector2ToVector3(Vector2 vector2)
+    {
+        return new Vector3(vector2.X, vector2.Y, 0);
+    }
+    
+    public static Vector2 Vector3ToVector2(Vector3 vector3)
+    {
+        return new Vector2(vector3.X, vector3.Y);
+    }
 }

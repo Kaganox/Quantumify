@@ -1,5 +1,5 @@
 using System.Numerics;
-using nkast.Aether.Physics2D.Dynamics;
+using Box2D.NetStandard.Dynamics.Bodies;
 using Quantumify;
 using Quantumify.Nodes;
 using Quantumify.Nodes.Nodes2D;
@@ -11,7 +11,7 @@ public class Coin : RigidBody2D
 {
     private float _xMult;
     private int type;
-    public Coin(float xMult,Texture2D? texture = null) : base(texture, Color.Yellow, BodyType.Static)
+    public Coin(float xMult,Texture2D? texture = null) : base(texture, color:Color.Yellow, bodyType:BodyType.Static)
     {
         this._xMult = xMult;
         Size = new Vector3(32, 32, 0);
@@ -43,7 +43,8 @@ public class Coin : RigidBody2D
     public override void Ready()
     {
         base.Ready();
-        Body.Position = new nkast.Aether.Physics2D.Common.Vector2(50+(this._xMult*2)*this.Size.X, -50);
+        
+        //Body. = new Vector2(50+(this._xMult*2)*this.Size.X, -50);
     }
 
     public override void CollisionEnter(Node node)

@@ -11,8 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Quantumify.Nodes.Nodes2D;
 using Quantumify.Physics.Jitter;
-using nkast.Aether.Physics2D.Dynamics;
-using Vector2A = nkast.Aether.Physics2D.Common.Vector2;
 
 namespace Test;
 
@@ -34,13 +32,13 @@ public class Player : RigidBody2D,SaveAble
         base.Update();
 
         Vector3 v = Input.Vector2Input() * 5f;
-        Body.Position += new Vector2A(v.X, v.Y);
+        Body.SetTransform(Body.GetTransform().p + new Vector2(v.X, v.Y),Rotation);
     }
 
     public override void Ready()
     {
         base.Ready();
-        Body.Position = new Vector2A(0,-Size.Y);
+        Body.SetTransform( new Vector2(0,-Size.Y),Rotation);
     }
 
     public override void Draw()
