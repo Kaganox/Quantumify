@@ -9,8 +9,8 @@ namespace Quantumify.Physics.Aether;
 public struct Physic2DSettings
 {
     public Vector2 Gravity;
-    public int VelocityIterations;
-    public int PositionIterations;
+    public readonly int VelocityIterations;
+    public readonly int PositionIterations;
 
     public Physic2DSettings()
     {

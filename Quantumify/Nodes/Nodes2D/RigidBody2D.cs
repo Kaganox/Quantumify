@@ -40,7 +40,8 @@ public class RigidBody2D : Node2D
         
         FixtureDef = fixtureDef ?? new FixtureDef
         {
-            shape = new PolygonShape(finalSize.X/2,finalSize.Y/2)
+            shape = new PolygonShape(finalSize.X/2,finalSize.Y/2),
+            density = 1
         };
     }
 
@@ -55,7 +56,7 @@ public class RigidBody2D : Node2D
             Ready();
             _hadSetuped = true;
         }
-        Body.SetLinearVelocity(new Vector2(Velocity.X,Velocity.Y));
+
         Vector3 newPosition = BodyVector3() - GlobalPosition;
         if (newPosition == Vector3.Zero)
         {
@@ -140,7 +141,8 @@ public class RigidBody2D : Node2D
         BodyDef = new BodyDef
         {
             position = new Vector2(GlobalPosition.X,GlobalPosition.Y),
-            angle = Rotation
+            angle = Rotation,
+            type = this.BodyType
         };
 
         
@@ -178,12 +180,6 @@ public class RigidBody2D : Node2D
             CollisionExit(node);
         };
         this.Body.Mass = 1000;*/
-        this.Body.SetMassData(new MassData()
-        {
-            mass = 5,
-            center = new Vector2(0,0),
-            I = 0
-        });
     }
 
     public RigidBody2D GetNodeFromFixture(Fixture fixture)

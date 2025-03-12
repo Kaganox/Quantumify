@@ -96,7 +96,7 @@ public class Scene : IUpdate
     {
         
         List<Node> drawPritority = new List<Node>(Nodes);
-        drawPritority.Sort((a, b) => a.ZIndex.CompareTo(b.ZIndex));
+        drawPritority.Sort((a, b) => b.ZIndex.CompareTo(a.ZIndex));
         drawPritority.ForEach(node =>
         {
             if (node is GuiElement { Visible: true })

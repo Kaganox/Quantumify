@@ -33,6 +33,7 @@ public class Player : RigidBody2D,SaveAble
 
         Vector3 v = Input.Vector2Input() * 5f;
         Body.SetTransform(Body.GetTransform().p + new Vector2(v.X, v.Y),Rotation);
+        //Logger.Warn(this.GlobalPosition+"");
     }
 
     public override void Ready()
